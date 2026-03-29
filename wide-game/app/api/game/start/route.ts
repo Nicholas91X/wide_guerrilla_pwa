@@ -1,8 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { anthropic, SYSTEM_PROMPT } from '@/lib/anthropic';
+import { checkRateLimit } from '@/lib/rateLimit';
 
 export async function POST(request: NextRequest) {
   try {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
+      '127.0.0.1';
+
+    const { allowed, message } = await checkRateLimit(ip);
+    if (!allowed) {
+      return NextResponse.json({ error: message }, { status: 429 });
+    }
+
     const { product } = (await request.json()) as { product: string };
 
     if (!product || typeof product !== 'string') {

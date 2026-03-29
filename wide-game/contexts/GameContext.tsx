@@ -23,6 +23,33 @@ interface GameContextType {
   skipContact: () => void;
 }
 
+// ─── Session save helper ─────────────────────────────────────────────────────
+
+async function saveSession(s: GameState): Promise<void> {
+  try {
+    await fetch('/api/session/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: s.sessionId,
+        productName: s.product.name,
+        step1Choice: s.steps[0].choice,
+        step1Output: s.steps[0].output,
+        step2Choice: s.steps[1].choice,
+        step2Output: s.steps[1].output,
+        step3Choice: s.steps[2].choice,
+        step3Output: s.steps[2].output,
+        conclusion: s.conclusion,
+        contactType: s.contact.type,
+        contactValue: s.contact.value,
+        completed: s.contact.submitted,
+      }),
+    });
+  } catch (err) {
+    console.error('[saveSession]', err);
+  }
+}
+
 // ─── Context e hook ──────────────────────────────────────────────────────────
 
 const GameContext = createContext<GameContextType | null>(null);
@@ -163,6 +190,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
           return { ...prev, steps: newSteps };
         });
+
+        // Fire-and-forget: salva la sessione con l'output appena ricevuto
+        const updatedSteps = [...state.steps] as typeof state.steps;
+        updatedSteps[idx] = { ...updatedSteps[idx], choice, output: data.output };
+        void saveSession({ ...state, steps: updatedSteps });
       } catch (err) {
         console.error('[chooseOption]', err);
         // Rollback: rimuove la scelta ottimistica in caso di errore
@@ -207,9 +239,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
         const data = (await res.json()) as { conclusion: string };
 
-        setState((prev) =>
-          prev ? { ...prev, currentStep: 'conclusion', conclusion: data.conclusion } : prev
-        );
+        const newState: GameState = { ...state, currentStep: 'conclusion', conclusion: data.conclusion };
+        setState(newState);
+        void saveSession(newState);
       } catch (err) {
         console.error('[continueToNext/conclude]', err);
       } finally {
@@ -227,14 +259,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const submitContact = useCallback(
     (type: 'email' | 'whatsapp', value: string) => {
       if (!state) return;
-      setState({ ...state, contact: { type, value, submitted: true } });
+      const newState: GameState = { ...state, contact: { type, value, submitted: true } };
+      setState(newState);
+      void saveSession(newState);
     },
     [state]
   );
 
   const skipContact = useCallback(() => {
     if (!state) return;
-    setState({ ...state, contact: { ...state.contact, submitted: true } });
+    const newState: GameState = { ...state, contact: { ...state.contact, submitted: true } };
+    setState(newState);
+    void saveSession(newState);
   }, [state]);
 
   return (
