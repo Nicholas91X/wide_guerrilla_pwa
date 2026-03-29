@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
     const userPrompt = `Prodotto: "${product}"
 
 Presenta questo prodotto all'imprenditore: 2-3 righe di introduzione ironica e grottesca.
+Fornisci anche una frase sola su prezzo consigliato e target di mercato (ironica, stile "Prezzo consigliato: €X. Target: [descrizione comica]").
 Poi presenta la Sfida 1 "Il Lancio": come vuole presentare il prodotto al mercato italiano?
 Fornisci esattamente 3 opzioni numeriche, brevi, credibili ma destinate al disastro.`;
 
@@ -49,8 +50,12 @@ Fornisci esattamente 3 opzioni numeriche, brevi, credibili ma destinate al disas
                 items: { type: 'string' },
                 description: 'Esattamente 3 opzioni brevi (max 15 parole ciascuna).',
               },
+              pitch: {
+                type: 'string',
+                description: 'Una frase su prezzo consigliato e target, ironica. Es: "Prezzo consigliato: €89. Target: chiunque abbia un addome." Max 15 parole.',
+              },
             },
-            required: ['narrative', 'challenge', 'options'],
+            required: ['narrative', 'challenge', 'options', 'pitch'],
           },
         },
       ],

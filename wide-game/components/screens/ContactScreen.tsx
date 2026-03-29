@@ -59,9 +59,8 @@ export default function ContactScreen() {
           Il marketing serio lo facciamo noi.
         </motion.p>
 
-        {/* TODO Blocco 6: sostituire href con URL definitivo WIDE */}
         <motion.a
-          href="https://widedigitale.it"
+          href="https://widestudiodigitale.com/"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full max-w-xs bg-gold text-background font-body font-semibold py-4 rounded-full text-base text-center block hover:bg-gold-light active:scale-95 transition-all"

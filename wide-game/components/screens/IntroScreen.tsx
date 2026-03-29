@@ -29,11 +29,15 @@ export default function IntroScreen() {
       {/* Copy + CTA */}
       <div className="w-full max-w-xs text-center">
         <p className="text-foreground-muted text-sm font-body leading-relaxed mb-8">
-          Ti assegneremo un prodotto da vendere.
+          🎩 BENVENUTO, IMPRENDITORE
           <br />
-          Qualunque scelta tu faccia, andrà male.
+          Il mercato è crudele. I forti sopravvivono.
           <br />
-          Benvenuto nel mondo del business.
+          I deboli aprono un B&B.
+          <br />
+          Oggi la tua missione è lanciare sul mercato
+          <br />
+          italiano un nuovo prodotto.
         </p>
         <button
           onClick={startGame}

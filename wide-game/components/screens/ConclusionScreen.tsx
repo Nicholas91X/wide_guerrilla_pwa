@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
-import Typewriter from '@/components/ui/Typewriter';
+import TypewriterBlock from '@/components/ui/TypewriterBlock';
 
 export default function ConclusionScreen() {
   const { state, proceedToContact } = useGame();
@@ -22,20 +22,19 @@ export default function ConclusionScreen() {
       <GifSlot name="conclusion" className="mb-6" />
 
       <div className="flex-1">
-        <p className="font-body text-base leading-relaxed mb-4 text-foreground">
-          <Typewriter
-            text={state.conclusion}
-            speed={14}
-            onDone={() => setDone(true)}
-          />
-        </p>
+        <TypewriterBlock
+          text={state.conclusion}
+          speed={13}
+          hasTitle={false}
+          onDone={() => setDone(true)}
+        />
       </div>
 
       <motion.button
         onClick={proceedToContact}
         initial={{ opacity: 0, y: 10 }}
         animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
+        transition={{ duration: 0.4, ease: 'easeOut' as const }}
         className="w-full mt-4 bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all"
       >
         Ricevi la tua storia

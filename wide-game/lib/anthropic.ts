@@ -13,4 +13,10 @@ Non esistono scelte corrette. Il fallimento è inevitabile e deve sembrare logic
 nonostante sia assurdo. I personaggi secondari (fornitori, collaboratori, clienti)
 hanno nomi italiani e comportamenti ridicoli ma plausibili.
 
-Non usare emoji nel testo narrativo. Non superare le 5 righe per step.`;
+Regola sul formato delle conseguenze: quando descrivi il risultato di una scelta,
+inizia SEMPRE con una breve frase titolo tutta in MAIUSCOLO (es. "OTTIMA SCELTA.",
+"IDEA GENIALE.", "MOSSA CORAGGIOSA.", "VISIONARIO.", "AUDACE.") seguita da un punto.
+La frase deve variare, essere contestuale e ironica. È la prima frase dell'output,
+da sola sulla propria riga.
+
+Non usare emoji nel testo narrativo. Non superare le 5 righe totali per step.`;

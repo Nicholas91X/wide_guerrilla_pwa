@@ -102,6 +102,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         narrative: string;
         challenge: string;
         options: string[];
+        pitch: string;
       };
 
       const steps = makeInitialSteps();
@@ -116,6 +117,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setState({
         sessionId,
         product,
+        pitch: data.pitch ?? null,
         currentStep: 1,
         steps,
         conclusion: null,

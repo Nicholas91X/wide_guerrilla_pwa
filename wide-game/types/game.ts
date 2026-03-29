@@ -21,6 +21,7 @@ export interface GameContact {
 export interface GameState {
   sessionId: string;
   product: Product;
+  pitch: string | null; // frase prezzo+target generata da AI
   currentStep: 1 | 2 | 3 | 'conclusion' | 'contact';
   steps: [StepData, StepData, StepData];
   conclusion: string | null;

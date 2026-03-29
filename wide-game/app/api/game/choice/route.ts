@@ -67,7 +67,7 @@ Descrivi le conseguenze disastrose in 4-5 righe.${
                 output: {
                   type: 'string',
                   description:
-                    'Conseguenze disastrose della scelta finale, 4-5 righe. No emoji.',
+                    'Prima riga: frase titolo in MAIUSCOLO (es. "MOSSA AUDACE."). Poi 3-4 righe di conseguenze disastrose. No emoji.',
                 },
               },
               required: ['output'],
@@ -99,7 +99,7 @@ Descrivi le conseguenze disastrose in 4-5 righe.${
                 output: {
                   type: 'string',
                   description:
-                    'Conseguenze disastrose della scelta, 4-5 righe. No emoji.',
+                    'Prima riga: frase titolo in MAIUSCOLO (es. "OTTIMA SCELTA.", "IDEA GENIALE."). Poi 3-4 righe di conseguenze disastrose. No emoji.',
                 },
                 challenge: {
                   type: 'string',

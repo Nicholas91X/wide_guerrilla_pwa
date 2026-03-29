@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import LoadingState from '@/components/ui/LoadingState';
 import GifSlot from '@/components/ui/GifSlot';
-import Typewriter from '@/components/ui/Typewriter';
+import TypewriterBlock from '@/components/ui/TypewriterBlock';
 
 const STEP_TITLES: Record<1 | 2 | 3, string> = {
   1: 'Il Lancio',
@@ -59,9 +59,14 @@ export default function ChallengeScreen({ step }: Props) {
           <p className="text-foreground-muted text-xs font-body uppercase tracking-wide mb-1">
             Il tuo prodotto
           </p>
-          <p className="text-foreground text-sm font-body leading-snug">
+          <p className="text-foreground text-sm font-body font-semibold leading-snug mb-1">
             {state.product.name}
           </p>
+          {state.pitch && (
+            <p className="text-foreground-muted text-xs font-body leading-snug">
+              {state.pitch}
+            </p>
+          )}
         </div>
       )}
 
@@ -73,14 +78,11 @@ export default function ChallengeScreen({ step }: Props) {
         <div className="flex-1 flex flex-col justify-between">
           {hasOutput ? (
             <>
-              <div>
-                <p className="text-gold text-xs font-body uppercase tracking-wide mb-3">
-                  Risultato
-                </p>
-                <p className="text-foreground font-body text-base leading-relaxed">
-                  <Typewriter text={stepData.output!} speed={15} />
-                </p>
-              </div>
+              <TypewriterBlock
+                text={stepData.output!}
+                speed={14}
+                hasTitle
+              />
               <button
                 onClick={continueToNext}
                 disabled={loading}
@@ -97,7 +99,7 @@ export default function ChallengeScreen({ step }: Props) {
               </button>
             </>
           ) : (
-            <LoadingState message="Le conseguenze stanno arrivando..." />
+            <LoadingState />
           )}
         </div>
       ) : (
