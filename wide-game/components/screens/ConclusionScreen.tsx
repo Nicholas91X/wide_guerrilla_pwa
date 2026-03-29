@@ -1,16 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
 import TypewriterBlock from '@/components/ui/TypewriterBlock';
 
+// Separa il narrativo dalla firma WIDE ("Non preoccuparti — ...")
+function splitConclusion(text: string): { narrative: string; signature: string | null } {
+  const marker = 'Non preoccuparti';
+  const idx = text.indexOf(marker);
+  if (idx === -1) return { narrative: text.trim(), signature: null };
+  return {
+    narrative: text.slice(0, idx).trim(),
+    signature: text.slice(idx).trim(),
+  };
+}
+
 export default function ConclusionScreen() {
   const { state, proceedToContact } = useGame();
   const [done, setDone] = useState(false);
 
+  // useCallback: referenza stabile → non causa reset del typewriter
+  const handleDone = useCallback(() => setDone(true), []);
+
   if (!state || !state.conclusion) return null;
+
+  const { narrative, signature } = splitConclusion(state.conclusion);
 
   return (
     <div className="min-h-screen flex flex-col px-6 py-8">
@@ -23,19 +39,42 @@ export default function ConclusionScreen() {
 
       <div className="flex-1">
         <TypewriterBlock
-          text={state.conclusion}
+          text={narrative}
           speed={13}
           hasTitle={false}
-          onDone={() => setDone(true)}
+          onDone={handleDone}
         />
+
+        {/* Firma WIDE — card oro, appare dopo il typewriter */}
+        {signature && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+            transition={{ duration: 0.7, ease: 'easeOut' as const, delay: 0.2 }}
+            className="mt-6 bg-gold/15 border border-gold/40 rounded-2xl px-5 py-4"
+          >
+            {signature.split('\n').filter(Boolean).map((line, i) => (
+              <p
+                key={i}
+                className={
+                  i === 0
+                    ? 'text-foreground font-body text-sm leading-relaxed'
+                    : 'text-gold font-display text-base mt-2'
+                }
+              >
+                {line}
+              </p>
+            ))}
+          </motion.div>
+        )}
       </div>
 
       <motion.button
         onClick={proceedToContact}
         initial={{ opacity: 0, y: 10 }}
         animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-        transition={{ duration: 0.4, ease: 'easeOut' as const }}
-        className="w-full mt-4 bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all"
+        transition={{ duration: 0.4, ease: 'easeOut' as const, delay: 0.6 }}
+        className="w-full mt-6 bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all"
       >
         Ricevi la tua storia
       </motion.button>

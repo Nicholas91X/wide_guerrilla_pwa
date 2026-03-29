@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Props {
   text: string;
@@ -10,21 +10,14 @@ interface Props {
   onDone?: () => void;
 }
 
-/**
- * Divide il testo in frasi (split su ". " e "\n\n") e le anima
- * carattere per carattere. Ogni frase va a capo come paragrafo separato.
- */
 function splitIntoSentences(text: string): string[] {
   if (!text) return [];
-  // Normalizza le doppie newline in separatore uniforme
   const normalized = text.replace(/\n\n+/g, '.|');
-  // Split su '. ' oppure '.|' (nostro separatore paragrafo)
   const parts = normalized.split(/\.\s+|\.\|/);
   return parts
     .map((p, i) => {
       const t = p.trim();
       if (!t) return null;
-      // Riattacca il punto se non è l'ultimo pezzo già terminante con punteggiatura
       const endsWithPunct = /[.!?]$/.test(t);
       return i < parts.length - 1 && !endsWithPunct ? t + '.' : t;
     })
@@ -33,6 +26,13 @@ function splitIntoSentences(text: string): string[] {
 
 export default function TypewriterBlock({ text, speed = 14, hasTitle = false, onDone }: Props) {
   const [displayed, setDisplayed] = useState('');
+
+  // Ref stabile per onDone: evita che una nuova arrow function inline
+  // causi il re-run dell'effect (e il reset del typewriter).
+  const onDoneRef = useRef(onDone);
+  useEffect(() => {
+    onDoneRef.current = onDone;
+  });
 
   useEffect(() => {
     setDisplayed('');
@@ -44,12 +44,12 @@ export default function TypewriterBlock({ text, speed = 14, hasTitle = false, on
       setDisplayed(text.slice(0, i));
       if (i >= text.length) {
         clearInterval(id);
-        onDone?.();
+        onDoneRef.current?.();
       }
     }, speed);
 
     return () => clearInterval(id);
-  }, [text, speed, onDone]);
+  }, [text, speed]); // onDone intenzionalmente escluso — gestito via ref
 
   const sentences = splitIntoSentences(displayed);
   const isTyping = displayed.length < text.length;
@@ -57,7 +57,6 @@ export default function TypewriterBlock({ text, speed = 14, hasTitle = false, on
   return (
     <div>
       {sentences.map((sentence, i) => {
-        const isFirst = i === 0;
         const isLast = i === sentences.length - 1;
 
         return (
@@ -65,7 +64,7 @@ export default function TypewriterBlock({ text, speed = 14, hasTitle = false, on
             key={i}
             className={[
               'font-body text-base leading-relaxed mb-3',
-              hasTitle && isFirst
+              hasTitle && i === 0
                 ? 'text-gold font-semibold tracking-wide'
                 : 'text-foreground',
             ].join(' ')}

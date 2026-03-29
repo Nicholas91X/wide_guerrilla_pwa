@@ -18,6 +18,18 @@ const STEP_GIFS: Record<1 | 2 | 3, string> = {
   3: 'challenge-3',
 };
 
+// Divide il pitch in frasi (split su ". ") per il rendering a paragrafi
+function splitPitch(text: string): string[] {
+  const parts = text.split(/\.\s+/);
+  return parts
+    .map((p, i) => {
+      const t = p.trim();
+      if (!t) return null;
+      return i < parts.length - 1 ? t + '.' : t;
+    })
+    .filter(Boolean) as string[];
+}
+
 const optionContainer = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
@@ -62,11 +74,11 @@ export default function ChallengeScreen({ step }: Props) {
           <p className="text-foreground text-sm font-body font-semibold leading-snug mb-1">
             {state.product.name}
           </p>
-          {state.pitch && (
-            <p className="text-foreground-muted text-xs font-body leading-snug">
-              {state.pitch}
+          {state.pitch && splitPitch(state.pitch).map((line, i) => (
+            <p key={i} className="text-foreground-muted text-xs font-body leading-snug mt-0.5">
+              {line}
             </p>
-          )}
+          ))}
         </div>
       )}
 
