@@ -1,6 +1,7 @@
 'use client';
 
 import { useGame } from '@/contexts/GameContext';
+import GifSlot from '@/components/ui/GifSlot';
 
 export default function IntroScreen() {
   const { startGame, loading } = useGame();
@@ -20,11 +21,9 @@ export default function IntroScreen() {
         </h1>
       </div>
 
-      {/* intro.gif */}
+      {/* GIF */}
       <div className="w-full max-w-xs">
-        <div className="w-full aspect-[3/2] bg-gold/5 border border-gold/20 rounded-2xl flex items-center justify-center">
-          <span className="text-foreground-muted text-xs font-body">intro.gif</span>
-        </div>
+        <GifSlot name="intro" />
       </div>
 
       {/* Copy + CTA */}

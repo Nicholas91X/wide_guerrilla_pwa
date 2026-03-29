@@ -1,7 +1,10 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import LoadingState from '@/components/ui/LoadingState';
+import GifSlot from '@/components/ui/GifSlot';
+import Typewriter from '@/components/ui/Typewriter';
 
 const STEP_TITLES: Record<1 | 2 | 3, string> = {
   1: 'Il Lancio',
@@ -10,9 +13,19 @@ const STEP_TITLES: Record<1 | 2 | 3, string> = {
 };
 
 const STEP_GIFS: Record<1 | 2 | 3, string> = {
-  1: 'challenge-1.gif',
-  2: 'challenge-2.gif',
-  3: 'challenge-3.gif',
+  1: 'challenge-1',
+  2: 'challenge-2',
+  3: 'challenge-3',
+};
+
+const optionContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+};
+
+const optionItem = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: 'easeOut' as const } },
 };
 
 interface Props {
@@ -52,12 +65,8 @@ export default function ChallengeScreen({ step }: Props) {
         </div>
       )}
 
-      {/* GIF placeholder */}
-      <div className="w-full aspect-[3/2] bg-gold/5 border border-gold/20 rounded-2xl flex items-center justify-center mb-6">
-        <span className="text-foreground-muted text-xs font-body">
-          {STEP_GIFS[step]}
-        </span>
-      </div>
+      {/* GIF */}
+      <GifSlot name={STEP_GIFS[step]} className="mb-6" />
 
       {hasChosen ? (
         /* ── Output mode ── */
@@ -69,7 +78,7 @@ export default function ChallengeScreen({ step }: Props) {
                   Risultato
                 </p>
                 <p className="text-foreground font-body text-base leading-relaxed">
-                  {stepData.output}
+                  <Typewriter text={stepData.output!} speed={15} />
                 </p>
               </div>
               <button
@@ -88,14 +97,12 @@ export default function ChallengeScreen({ step }: Props) {
               </button>
             </>
           ) : (
-            /* Scelta fatta, in attesa dell'output AI */
             <LoadingState message="Le conseguenze stanno arrivando..." />
           )}
         </div>
       ) : (
         /* ── Choice mode ── */
         <div className="flex-1 flex flex-col">
-          {/* Narrativa intro (step 1 da /start) */}
           {stepData.narrative && (
             <p className="text-foreground-muted font-body text-sm leading-relaxed mb-4 italic">
               {stepData.narrative}
@@ -104,19 +111,25 @@ export default function ChallengeScreen({ step }: Props) {
           <p className="text-foreground font-body text-base leading-relaxed mb-6">
             {stepData.challenge}
           </p>
-          <div className="flex flex-col gap-3">
+          <motion.div
+            className="flex flex-col gap-3"
+            variants={optionContainer}
+            initial="hidden"
+            animate="show"
+          >
             {stepData.options.map((option, i) => (
-              <button
+              <motion.button
                 key={i}
+                variants={optionItem}
                 onClick={() => chooseOption(option)}
                 disabled={loading}
-                className="text-left border border-gold/30 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:border-gold hover:bg-gold/5 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                className="text-left border border-gold/30 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:border-gold hover:bg-gold/5 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <span className="text-gold font-semibold mr-2">{i + 1}.</span>
                 {option}
-              </button>
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
         </div>
       )}
 

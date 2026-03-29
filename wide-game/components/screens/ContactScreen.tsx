@@ -1,7 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
+import GifSlot from '@/components/ui/GifSlot';
+
+const revealTransition = (delay: number) =>
+  ({ duration: 0.5, ease: 'easeOut' as const, delay }) as const;
 
 export default function ContactScreen() {
   const { state, submitContact, skipContact } = useGame();
@@ -16,27 +21,45 @@ export default function ContactScreen() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
 
-        {/* reveal.gif */}
-        <div className="w-full max-w-xs mx-auto aspect-[3/2] bg-gold/5 border border-gold/20 rounded-2xl flex items-center justify-center mb-8">
-          <span className="text-foreground-muted text-xs font-body">reveal.gif</span>
-        </div>
+        <motion.div
+          className="w-full max-w-xs mx-auto mb-8"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={revealTransition(0)}
+        >
+          <GifSlot name="reveal" />
+        </motion.div>
 
-        <p className="font-display text-3xl text-foreground mb-2">
+        <motion.p
+          className="font-display text-3xl text-foreground mb-2"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={revealTransition(0.3)}
+        >
           WIDE Studio Digitale
-        </p>
-        <p className="text-foreground-muted text-sm font-body leading-relaxed mb-10">
+        </motion.p>
+
+        <motion.p
+          className="text-foreground-muted text-sm font-body leading-relaxed mb-10"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={revealTransition(0.5)}
+        >
           Il marketing serio lo facciamo noi.
-        </p>
+        </motion.p>
 
         {/* TODO Blocco 6: sostituire href con URL definitivo WIDE */}
-        <a
+        <motion.a
           href="https://widedigitale.it"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full max-w-xs bg-gold text-background font-body font-semibold py-4 rounded-full text-base text-center block hover:bg-gold-light active:scale-95 transition-all"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={revealTransition(0.75)}
         >
           Scopri WIDE
-        </a>
+        </motion.a>
 
       </div>
     );
