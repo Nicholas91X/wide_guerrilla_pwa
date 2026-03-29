@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx:*)",
+      "Bash(printf \"\\\\n\")",
+      "Bash(printf \"\\\\nN\\\\n\")",
+      "Bash(yes \"\")",
+      "Bash(npm install:*)",
+      "WebSearch",
+      "WebFetch(domain:supabase.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(node:*)",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__list_tables"
+    ]
+  }
+}

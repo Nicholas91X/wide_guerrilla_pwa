@@ -1,0 +1,18 @@
+{
+  "products": [
+    { "id": 1, "name": "Patch dimagranti da applicare durante il sonno con frequenze 5G", "category": "bellezza" },
+    { "id": 2, "name": "Siero anti-età a base di lacrime di coccodrillo biologico", "category": "bellezza" },
+    { "id": 3, "name": "Crema anti-cellulite attivabile solo alla luce della luna", "category": "bellezza" },
+    { "id": 4, "name": "Integratore di magnetite per allineare il metabolismo con i poli terrestri", "category": "bellezza" },
+    { "id": 5, "name": "Cintura vibrante sciogli-pancia da indossare durante le riunioni", "category": "bellezza" },
+    { "id": 6, "name": "Crema termogenica che trasforma l'ansia in calorie", "category": "bellezza" },
+    { "id": 7, "name": "Shampoo al placenta di alpaca per capelli da CEO", "category": "bellezza" },
+    { "id": 8, "name": "Guanti dimagranti in grafene da indossare mentre si mangia", "category": "bellezza" },
+    { "id": 9, "name": "Acqua di lusso in bottiglia di cristallo con certificato di purezza astrale", "category": "lifestyle" },
+    { "id": 10, "name": "Ombrelli personalizzati per cani con monogramma", "category": "lifestyle" },
+    { "id": 11, "name": "Candele profumate al profumo di mattina produttiva", "category": "lifestyle" },
+    { "id": 12, "name": "Corsi di comunicazione assertiva per gatti", "category": "formazione" },
+    { "id": 13, "name": "Consulenza astrologica per decisioni aziendali", "category": "consulenza" },
+    { "id": 14, "name": "Abbonamento mensile a calzini di design con aforismi neurologici", "category": "lifestyle" }
+  ]
+}
