@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GameProvider, useGame } from '@/contexts/GameContext';
+import PreIntroScreen from './screens/PreIntroScreen';
 import IntroScreen from './screens/IntroScreen';
 import ChallengeScreen from './screens/ChallengeScreen';
 import ConclusionScreen from './screens/ConclusionScreen';
@@ -9,11 +11,13 @@ import ContactScreen from './screens/ContactScreen';
 
 function GameContent() {
   const { state } = useGame();
+  const [preIntroDone, setPreIntroDone] = useState(false);
 
-  const key = state ? String(state.currentStep) : 'intro';
+  const key = !preIntroDone ? 'preintro' : state ? String(state.currentStep) : 'intro';
 
   let screen: React.ReactNode;
-  if (!state) screen = <IntroScreen />;
+  if (!preIntroDone) screen = <PreIntroScreen onReady={() => setPreIntroDone(true)} />;
+  else if (!state) screen = <IntroScreen />;
   else if (state.currentStep === 1) screen = <ChallengeScreen step={1} />;
   else if (state.currentStep === 2) screen = <ChallengeScreen step={2} />;
   else if (state.currentStep === 3) screen = <ChallengeScreen step={3} />;
