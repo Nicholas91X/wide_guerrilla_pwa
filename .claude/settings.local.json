@@ -13,7 +13,11 @@
       "mcp__supabase__apply_migration",
       "mcp__supabase__list_tables",
       "Bash(pkill -f \"next dev\")",
-      "mcp__supabase__execute_sql"
+      "mcp__supabase__execute_sql",
+      "Bash(ls:*)",
+      "Bash(__NEW_LINE_240da767e98eb0c1__ echo:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(cd /c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game __NEW_LINE_c72a37c6a93d512d__ echo \"=== Buttons without explicit height/padding ===\" grep -n \"<button\" components/screens/ChallengeScreen.tsx components/screens/IntroScreen.tsx components/screens/ConclusionScreen.tsx)"
     ]
   }
 }

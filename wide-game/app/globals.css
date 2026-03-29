@@ -26,6 +26,13 @@ body {
   font-family: var(--font-outfit), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Previene overflow orizzontale su mobile */
+  overflow-x: hidden;
+}
+
+/* Usa l'altezza dinamica del viewport (iOS Safari 16+ resiste alla tastiera) */
+.min-h-screen {
+  min-height: 100dvh;
 }
 
 h1,

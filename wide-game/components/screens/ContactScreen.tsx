@@ -8,6 +8,17 @@ import GifSlot from '@/components/ui/GifSlot';
 const revealTransition = (delay: number) =>
   ({ duration: 0.5, ease: 'easeOut' as const, delay }) as const;
 
+function isValidValue(value: string, type: 'email' | 'whatsapp'): boolean {
+  const v = value.trim();
+  if (!v) return false;
+  if (type === 'email') {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+  // WhatsApp: rimuove tutto tranne le cifre, accetta 9-15 digit
+  const digits = v.replace(/\D/g, '');
+  return digits.length >= 9 && digits.length <= 15;
+}
+
 export default function ContactScreen() {
   const { state, submitContact, skipContact } = useGame();
   const [contactType, setContactType] = useState<'email' | 'whatsapp'>('email');
@@ -66,7 +77,8 @@ export default function ContactScreen() {
   }
 
   // ── Form contatto ──────────────────────────────────────────────────────────
-  const canSubmit = gdpr && value.trim().length > 0;
+  const valid = isValidValue(value, contactType);
+  const canSubmit = gdpr && valid;
 
   const handleSubmit = () => {
     if (!canSubmit) return;
@@ -74,7 +86,8 @@ export default function ContactScreen() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-6 py-8">
+    /* overflow-y-auto permette lo scroll quando la tastiera virtuale è aperta */
+    <div className="min-h-screen flex flex-col px-6 py-8 overflow-y-auto">
 
       <h2 className="font-display text-2xl text-foreground leading-snug mb-2">
         Vuoi ricevere la tua storia di bancarotta?
@@ -83,13 +96,13 @@ export default function ContactScreen() {
         Te la mandiamo subito. Nessun altro messaggio.
       </p>
 
-      {/* Toggle email / WhatsApp */}
+      {/* Toggle email / WhatsApp — min 44px tap target */}
       <div className="flex rounded-full border border-gold/30 p-1 mb-6">
         {(['email', 'whatsapp'] as const).map((type) => (
           <button
             key={type}
             onClick={() => { setContactType(type); setValue(''); }}
-            className={`flex-1 py-2 rounded-full text-sm font-body transition-colors ${
+            className={`flex-1 min-h-[44px] rounded-full text-sm font-body transition-colors ${
               contactType === type
                 ? 'bg-gold text-background font-semibold'
                 : 'text-foreground-muted hover:text-foreground'
@@ -103,6 +116,8 @@ export default function ContactScreen() {
       {/* Input */}
       <input
         type={contactType === 'email' ? 'email' : 'tel'}
+        inputMode={contactType === 'email' ? 'email' : 'tel'}
+        autoComplete={contactType === 'email' ? 'email' : 'tel'}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={
@@ -111,35 +126,52 @@ export default function ContactScreen() {
         className="w-full bg-transparent border border-gold/30 text-foreground font-body px-4 py-3 rounded-xl mb-4 focus:outline-none focus:border-gold placeholder:text-foreground-muted/40 transition-colors"
       />
 
+      {/* Feedback validazione (solo se c'è testo) */}
+      {value.trim().length > 0 && !valid && (
+        <p className="text-gold/70 text-xs font-body mb-4 -mt-2 px-1">
+          {contactType === 'email'
+            ? 'Formato email non valido.'
+            : 'Inserisci un numero valido (min 9 cifre).'}
+        </p>
+      )}
+
       {/* GDPR checkbox */}
-      {/* TODO Blocco 6: modale iubenda per Privacy Policy */}
       <label className="flex items-start gap-3 mb-8 cursor-pointer">
+        {/* L'area cliccabile include sia la checkbox che il testo */}
         <input
           type="checkbox"
           checked={gdpr}
           onChange={(e) => setGdpr(e.target.checked)}
-          className="mt-0.5 accent-gold w-4 h-4 shrink-0"
+          className="mt-0.5 accent-gold w-5 h-5 shrink-0 cursor-pointer"
         />
         <span className="text-foreground-muted text-xs font-body leading-relaxed">
           Ho letto e accetto la{' '}
-          <span className="text-gold underline">Privacy Policy</span>{' '}
-          di WIDE Studio Digitale.
+          <a
+            href="https://widestudiodigitale.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gold underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Privacy Policy
+          </a>
+          {' '}di WIDE Studio Digitale.
         </span>
       </label>
 
-      {/* CTA */}
+      {/* CTA — 56px height per tap target sicuro */}
       <button
         onClick={handleSubmit}
         disabled={!canSubmit}
-        className="w-full bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+        className="w-full min-h-[56px] bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
       >
         Mandamela
       </button>
 
-      {/* Skip */}
+      {/* Skip — min 44px tap target */}
       <button
         onClick={skipContact}
-        className="w-full mt-4 text-foreground-muted text-sm font-body py-2 hover:text-foreground transition-colors"
+        className="w-full min-h-[44px] mt-2 text-foreground-muted text-sm font-body hover:text-foreground transition-colors"
       >
         No grazie
       </button>
