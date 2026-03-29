@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
 
@@ -131,6 +131,22 @@ export default function ContactScreen() {
         }
         className="w-full bg-transparent border border-gold/30 text-foreground font-body px-4 py-3 rounded-xl mb-4 focus:outline-none focus:border-gold placeholder:text-foreground-muted/40 transition-colors"
       />
+
+      {/* Testo esplicativo — cambia con fade al toggle */}
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={contactType}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="text-foreground/50 text-xs font-body text-center mb-4 -mt-2 px-1"
+        >
+          {contactType === 'email'
+            ? 'Riceverai la tua storia di bancarotta via email in pochi secondi.'
+            : 'Salveremo il tuo numero e ti contatteremo su WhatsApp entro 24 ore.'}
+        </motion.p>
+      </AnimatePresence>
 
       {/* Feedback validazione (solo se c'è testo) */}
       {value.trim().length > 0 && !valid && (
