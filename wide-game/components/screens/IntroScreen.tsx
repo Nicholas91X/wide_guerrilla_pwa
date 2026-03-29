@@ -3,7 +3,7 @@
 import { useGame } from '@/contexts/GameContext';
 
 export default function IntroScreen() {
-  const { startGame } = useGame();
+  const { startGame, loading } = useGame();
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between px-6 py-12">
@@ -38,9 +38,17 @@ export default function IntroScreen() {
         </p>
         <button
           onClick={startGame}
-          className="w-full bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all"
+          disabled={loading}
+          className="w-full bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
         >
-          Inizia
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="w-4 h-4 border-2 border-background/40 border-t-background rounded-full animate-spin inline-block" />
+              Preparando...
+            </span>
+          ) : (
+            'Inizia'
+          )}
         </button>
       </div>
 

@@ -1,0 +1,132 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { anthropic, SYSTEM_PROMPT } from '@/lib/anthropic';
+
+type PreviousStep = { choice: string; output: string };
+
+const STEP_NAMES: Record<1 | 2 | 3, string> = {
+  1: 'Il Lancio',
+  2: 'La Crisi Operativa',
+  3: "L'Ultima Spiaggia",
+};
+
+export async function POST(request: NextRequest) {
+  try {
+    const { product, step, choice, previousSteps } = (await request.json()) as {
+      product: string;
+      step: 1 | 2 | 3;
+      choice: string;
+      previousSteps: PreviousStep[];
+    };
+
+    if (!product || !step || !choice) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Accumula il contesto degli step precedenti
+    const contextLines = (previousSteps ?? [])
+      .map(
+        (s, i) =>
+          `Step ${i + 1} (${STEP_NAMES[(i + 1) as 1 | 2 | 3]}) - Scelta: "${s.choice}" → Risultato: "${s.output}"`
+      )
+      .join('\n');
+
+    const isLastStep = step === 3;
+
+    // Prompt seguendo esattamente la struttura del documento di progetto
+    let userPrompt: string;
+    if (step === 1) {
+      userPrompt = `Prodotto: "${product}"
+L'imprenditore ha scelto come strategia di lancio: "${choice}"
+Descrivi le conseguenze disastrose in 4-5 righe.
+Poi presenta la Sfida 2 "La Crisi Operativa" con 3 nuove opzioni numeriche.`;
+    } else {
+      userPrompt = `Prodotto: "${product}"
+${contextLines}
+L'imprenditore ha scelto: "${choice}"
+Continua la storia tenendo conto di ciò che è già successo.
+Descrivi le conseguenze disastrose in 4-5 righe.${
+        !isLastStep
+          ? `\nPoi presenta la Sfida ${step + 1} "${STEP_NAMES[(step + 1) as 2 | 3]}" con 3 nuove opzioni numeriche.`
+          : "\nQuesta è l'ultima mossa prima della bancarotta totale."
+      }`;
+    }
+
+    if (isLastStep) {
+      // Step 3: solo output narrativo, nessuna sfida successiva
+      const response = await anthropic.messages.create({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 512,
+        system: SYSTEM_PROMPT,
+        tools: [
+          {
+            name: 'game_choice_final',
+            description: "Risposta per l'ultima sfida, senza sfida successiva",
+            input_schema: {
+              type: 'object' as const,
+              properties: {
+                output: {
+                  type: 'string',
+                  description:
+                    'Conseguenze disastrose della scelta finale, 4-5 righe. No emoji.',
+                },
+              },
+              required: ['output'],
+            },
+          },
+        ],
+        tool_choice: { type: 'tool', name: 'game_choice_final' },
+        messages: [{ role: 'user', content: userPrompt }],
+      });
+
+      const toolBlock = response.content.find((b) => b.type === 'tool_use');
+      if (!toolBlock || toolBlock.type !== 'tool_use') {
+        return NextResponse.json({ error: 'AI parsing failed' }, { status: 500 });
+      }
+      return NextResponse.json(toolBlock.input);
+    } else {
+      // Step 1 o 2: output + prossima sfida con 3 opzioni
+      const response = await anthropic.messages.create({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1024,
+        system: SYSTEM_PROMPT,
+        tools: [
+          {
+            name: 'game_choice',
+            description: 'Risposta con conseguenze narrative e sfida successiva',
+            input_schema: {
+              type: 'object' as const,
+              properties: {
+                output: {
+                  type: 'string',
+                  description:
+                    'Conseguenze disastrose della scelta, 4-5 righe. No emoji.',
+                },
+                challenge: {
+                  type: 'string',
+                  description: 'Testo della sfida successiva, 1-2 righe.',
+                },
+                options: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  description: 'Esattamente 3 opzioni brevi (max 15 parole ciascuna).',
+                },
+              },
+              required: ['output', 'challenge', 'options'],
+            },
+          },
+        ],
+        tool_choice: { type: 'tool', name: 'game_choice' },
+        messages: [{ role: 'user', content: userPrompt }],
+      });
+
+      const toolBlock = response.content.find((b) => b.type === 'tool_use');
+      if (!toolBlock || toolBlock.type !== 'tool_use') {
+        return NextResponse.json({ error: 'AI parsing failed' }, { status: 500 });
+      }
+      return NextResponse.json(toolBlock.input);
+    }
+  } catch (err) {
+    console.error('[/api/game/choice]', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

@@ -5,6 +5,7 @@ export interface Product {
 }
 
 export interface StepData {
+  narrative: string | null; // testo intro generato da AI (solo step 1, da /start)
   challenge: string;
   options: string[];
   choice: string | null;
