@@ -41,14 +41,21 @@ export default function ContactScreen() {
           <GifSlot name="reveal" />
         </motion.div>
 
-        <motion.p
-          className="font-display text-3xl text-foreground mb-2"
+        <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={revealTransition(0.3)}
+          className="mb-2"
         >
-          WIDE Studio Digitale
-        </motion.p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt="WIDE Studio Digitale"
+            width={80}
+            height={80}
+            className="mx-auto"
+          />
+        </motion.div>
 
         <motion.p
           className="text-foreground-muted text-sm font-body leading-relaxed mb-10"

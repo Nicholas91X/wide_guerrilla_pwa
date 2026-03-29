@@ -15,9 +15,14 @@ export default function DesktopBlockScreen() {
 
         <div className="w-12 h-px bg-gold mx-auto mb-6" />
 
-        <p className="font-display text-gold text-sm tracking-widest uppercase">
-          WIDE Studio Digitale
-        </p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/logo.png"
+          alt="WIDE Studio Digitale"
+          width={64}
+          height={64}
+          className="mx-auto"
+        />
       </div>
     </div>
   );
