@@ -40,10 +40,23 @@ function GameContent() {
   );
 }
 
+function AppFooter() {
+  return (
+    <footer className="flex flex-col items-center gap-2 py-8 px-6">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.png" alt="WIDE Studio Digitale" width={32} height={32} className="opacity-40" />
+      <p className="text-foreground-muted/40 text-xs font-body text-center leading-relaxed">
+        Un&rsquo;esperienza tragicomica offerta da WIDE Studio Digitale.
+      </p>
+    </footer>
+  );
+}
+
 export default function GameApp() {
   return (
     <GameProvider>
       <GameContent />
+      <AppFooter />
     </GameProvider>
   );
 }
