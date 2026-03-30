@@ -5,6 +5,7 @@ import { useGame } from '@/contexts/GameContext';
 import LoadingState from '@/components/ui/LoadingState';
 import GifSlot from '@/components/ui/GifSlot';
 import TypewriterBlock from '@/components/ui/TypewriterBlock';
+import ProductImage from '@/components/ui/ProductImage';
 
 const STEP_TITLES: Record<1 | 2 | 3, string> = {
   1: 'Il Lancio',
@@ -67,18 +68,23 @@ export default function ChallengeScreen({ step }: Props) {
 
       {/* Banner prodotto (solo step 1) */}
       {step === 1 && (
-        <div className="bg-gold/10 border border-gold/30 rounded-xl px-4 py-3 mb-4">
-          <p className="text-foreground-muted text-xs font-body uppercase tracking-wide mb-1">
-            Il tuo prodotto
-          </p>
-          <p className="text-foreground text-sm font-body font-semibold leading-snug mb-1">
-            {state.product.name}
-          </p>
-          {state.pitch && splitPitch(state.pitch).map((line, i) => (
-            <p key={i} className="text-foreground-muted text-xs font-body leading-snug mt-0.5">
-              {line}
+        <div className="bg-gold/10 border border-gold/30 rounded-xl overflow-hidden mb-4">
+          {/* Immagine prodotto */}
+          <ProductImage productId={state.product.id} />
+          {/* Testo */}
+          <div className="px-4 py-3">
+            <p className="text-foreground-muted text-xs font-body uppercase tracking-wide mb-1">
+              Il tuo prodotto
             </p>
-          ))}
+            <p className="text-foreground text-sm font-body font-semibold leading-snug mb-2">
+              {state.product.name}
+            </p>
+            {state.pitch && splitPitch(state.pitch).map((line, i) => (
+              <p key={i} className="text-foreground-muted text-xs font-body leading-snug mt-1.5">
+                {line}
+              </p>
+            ))}
+          </div>
         </div>
       )}
 
