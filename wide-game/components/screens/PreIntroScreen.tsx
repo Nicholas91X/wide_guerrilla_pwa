@@ -5,7 +5,6 @@ interface Props {
 export default function PreIntroScreen({ onReady }: Props) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-between px-6 py-12">
-
       <div />
 
       <div className="w-full max-w-xs text-center">
@@ -19,7 +18,7 @@ export default function PreIntroScreen({ onReady }: Props) {
         </p>
 
         <p className="text-foreground-muted text-base font-body leading-relaxed mb-10">
-          Nel mercato italiano.
+          Nel mercato italiano...
         </p>
 
         <p className="text-foreground-muted/60 text-base font-body italic">
@@ -35,7 +34,6 @@ export default function PreIntroScreen({ onReady }: Props) {
           Sono pronto
         </button>
       </div>
-
     </div>
   );
 }
