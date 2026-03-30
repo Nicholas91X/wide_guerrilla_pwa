@@ -4,7 +4,7 @@ interface Props {
 
 export default function PreIntroScreen({ onReady }: Props) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between px-6 py-12">
+    <div className="min-h-screen max-h-screen overflow-hidden flex flex-col items-center justify-between px-6 py-12">
       <div />
 
       <div className="w-full max-w-xs text-center">

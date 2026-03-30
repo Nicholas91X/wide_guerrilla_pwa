@@ -143,7 +143,7 @@ export default function ChallengeScreen({ step }: Props) {
                 className="text-left border border-gold/30 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:border-gold hover:bg-gold/5 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <span className="text-gold font-semibold mr-2">{i + 1}.</span>
-                {option}
+                {option.replace(/^\d+[.)]\s*/, '')}
               </motion.button>
             ))}
           </motion.div>

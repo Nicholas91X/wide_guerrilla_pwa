@@ -23,7 +23,7 @@ export default function IntroScreen() {
       </div>
 
       {/* GIF */}
-      <div className="w-full max-w-xs">
+      <div className="w-full max-w-xs my-8">
         <GifSlot name="intro" />
       </div>
 
