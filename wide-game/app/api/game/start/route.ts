@@ -39,16 +39,16 @@ Fornisci esattamente 3 opzioni numeriche di marketing, brevi, credibili ma desti
             properties: {
               narrative: {
                 type: 'string',
-                description: 'Introduzione ironica del prodotto, max 3 righe. No emoji.',
+                description: 'Introduzione ironica del prodotto, max 3 righe. Usa la tecnica in 3 movimenti: dettaglio iper-realistico → svolta assurda → conseguenza laterale. Nomi propri italiani, cifre reali, riferimenti culturali italiani. No emoji.',
               },
               challenge: {
                 type: 'string',
-                description: 'Testo della Sfida 1 (Il Lancio), 1-2 righe.',
+                description: 'Testo della Sfida 1 (Il Posizionamento): come vuole posizionare il prodotto nel mercato italiano? 1-2 righe.',
               },
               options: {
                 type: 'array',
                 items: { type: 'string' },
-                description: 'Esattamente 3 opzioni brevi (max 15 parole ciascuna).',
+                description: 'Esattamente 3 opzioni di marketing (canale, messaggio, formato, target), max 15 parole ciascuna. Senza numero iniziale.',
               },
               pitch: {
                 type: 'string',

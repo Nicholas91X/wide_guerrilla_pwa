@@ -55,7 +55,7 @@ Descrivi le conseguenze disastrose in 4-5 righe.${
       // Step 3: solo output narrativo, nessuna sfida successiva
       const response = await anthropic.messages.create({
         model: 'claude-sonnet-4-6',
-        max_tokens: 512,
+        max_tokens: 1024,
         system: SYSTEM_PROMPT,
         tools: [
           {
@@ -67,7 +67,7 @@ Descrivi le conseguenze disastrose in 4-5 righe.${
                 output: {
                   type: 'string',
                   description:
-                    'Prima riga: frase titolo in MAIUSCOLO (es. "MOSSA AUDACE."). Poi 3-4 righe di conseguenze disastrose. No emoji.',
+                    'Prima riga: frase titolo in MAIUSCOLO (es. "MOSSA AUDACE."). Poi 3-4 righe con la tecnica in 3 movimenti: (1) esecuzione iper-realistica con nomi propri italiani e cifre reali, (2) svolta assurda con logica interna, (3) conseguenza laterale grottesca. No emoji.',
                 },
               },
               required: ['output'],
@@ -99,16 +99,16 @@ Descrivi le conseguenze disastrose in 4-5 righe.${
                 output: {
                   type: 'string',
                   description:
-                    'Prima riga: frase titolo in MAIUSCOLO (es. "OTTIMA SCELTA.", "IDEA GENIALE."). Poi 3-4 righe di conseguenze disastrose. No emoji.',
+                    'Prima riga: frase titolo in MAIUSCOLO (es. "OTTIMA SCELTA.", "IDEA GENIALE."). Poi 3-4 righe con la tecnica in 3 movimenti: (1) esecuzione iper-realistica con nomi propri italiani e cifre reali, (2) svolta assurda con logica interna, (3) conseguenza laterale grottesca. No emoji.',
                 },
                 challenge: {
                   type: 'string',
-                  description: 'Testo della sfida successiva, 1-2 righe.',
+                  description: 'Domanda sulla prossima decisione di marketing, 1-2 righe. Deve emergere naturalmente dal disastro appena descritto.',
                 },
                 options: {
                   type: 'array',
                   items: { type: 'string' },
-                  description: 'Esattamente 3 opzioni brevi (max 15 parole ciascuna).',
+                  description: 'Esattamente 3 opzioni di marketing (canale, messaggio, formato, target), max 15 parole ciascuna. Senza numero iniziale.',
                 },
               },
               required: ['output', 'challenge', 'options'],
