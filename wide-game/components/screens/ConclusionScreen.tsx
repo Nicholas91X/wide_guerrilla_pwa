@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
+import { VIDEO_POOLS } from '@/lib/videoPools';
 import TypewriterBlock from '@/components/ui/TypewriterBlock';
 
 // Separa il narrativo dalla firma WIDE ("Non preoccuparti — ...")
@@ -35,7 +36,7 @@ export default function ConclusionScreen() {
         Fine della storia
       </p>
 
-      <GifSlot name="conclusion" className="mb-6" />
+      <GifSlot pool={VIDEO_POOLS.conclusion} className="mb-6" />
 
       <div className="flex-1">
         <TypewriterBlock

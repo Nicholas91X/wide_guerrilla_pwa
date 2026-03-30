@@ -6,17 +6,12 @@ import LoadingState from '@/components/ui/LoadingState';
 import GifSlot from '@/components/ui/GifSlot';
 import TypewriterBlock from '@/components/ui/TypewriterBlock';
 import ProductImage from '@/components/ui/ProductImage';
+import { VIDEO_POOLS } from '@/lib/videoPools';
 
 const STEP_TITLES: Record<1 | 2 | 3, string> = {
   1: 'Il Lancio',
   2: 'La Crisi Operativa',
   3: "L'Ultima Spiaggia",
-};
-
-const STEP_GIFS: Record<1 | 2 | 3, string> = {
-  1: 'challenge-1',
-  2: 'challenge-2',
-  3: 'challenge-3',
 };
 
 // Divide il pitch in frasi (split su ". ") per il rendering a paragrafi
@@ -88,8 +83,8 @@ export default function ChallengeScreen({ step }: Props) {
         </div>
       )}
 
-      {/* GIF */}
-      <GifSlot name={STEP_GIFS[step]} className="mb-6" />
+      {/* Video — random dal pool della sfida corrente */}
+      <GifSlot pool={VIDEO_POOLS[`challenge-${step}`]} className="mb-6" />
 
       {hasChosen ? (
         /* ── Output mode ── */

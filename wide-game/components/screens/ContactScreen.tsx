@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
+import { VIDEO_POOLS } from '@/lib/videoPools';
 
 const revealTransition = (delay: number) =>
   ({ duration: 0.5, ease: 'easeOut' as const, delay }) as const;
@@ -38,7 +39,7 @@ export default function ContactScreen() {
           animate={{ opacity: 1, y: 0 }}
           transition={revealTransition(0)}
         >
-          <GifSlot name="reveal" />
+          <GifSlot pool={VIDEO_POOLS.reveal} />
         </motion.div>
 
         <motion.div

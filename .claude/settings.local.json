@@ -17,7 +17,15 @@
       "Bash(ls:*)",
       "Bash(__NEW_LINE_240da767e98eb0c1__ echo:*)",
       "Bash(git check-ignore:*)",
-      "Bash(cd /c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game __NEW_LINE_c72a37c6a93d512d__ echo \"=== Buttons without explicit height/padding ===\" grep -n \"<button\" components/screens/ChallengeScreen.tsx components/screens/IntroScreen.tsx components/screens/ConclusionScreen.tsx)"
+      "Bash(cd /c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game __NEW_LINE_c72a37c6a93d512d__ echo \"=== Buttons without explicit height/padding ===\" grep -n \"<button\" components/screens/ChallengeScreen.tsx components/screens/IntroScreen.tsx components/screens/ConclusionScreen.tsx)",
+      "Bash(SRC=\"/c/Users/Principale/Desktop/Documenti/Wide/wide_guerrilla_pwa/gif\")",
+      "Bash(DEST=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs\")",
+      "Bash(__NEW_LINE_aed03c5e1e3f95e3__ cp:*)",
+      "Bash(cp \"$SRC/loading.mp4\" \"$DEST/loading.mp4\")",
+      "Bash(for i:*)",
+      "Bash(ffmpeg -version)",
+      "Bash(SRC=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.mp4\" OUT=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.webm\" __NEW_LINE_caf0360ff5a06b4a__ ffmpeg -y -i \"$SRC\" -vf \"colorkey=white:0.25:0.15,format=yuva420p\" -c:v libvpx-vp9 -auto-alt-ref 0 -b:v 0 -crf 30 \"$OUT\")",
+      "Bash(SRC=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.mp4\" OUT=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.webm\" __NEW_LINE_812fcf4ef1c5df8d__ ffmpeg -y -i \"$SRC\" -vf \"colorkey=white:0.05:0.02,format=yuva420p\" -c:v libvpx-vp9 -auto-alt-ref 0 -b:v 0 -crf 30 \"$OUT\")"
     ]
   }
 }

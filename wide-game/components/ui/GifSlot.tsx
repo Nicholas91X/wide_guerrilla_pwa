@@ -5,16 +5,26 @@ import { useState } from 'react';
 type SlotState = 'gif' | 'mp4' | 'error';
 
 interface Props {
-  name: string;
+  name?: string;
+  pool?: readonly string[];
   className?: string;
 }
 
-export default function GifSlot({ name, className = '' }: Props) {
+function pickRandom(pool: readonly string[]): string {
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+export default function GifSlot({ name, pool, className = '' }: Props) {
+  const [resolvedName] = useState<string>(() => {
+    if (pool && pool.length > 0) return pickRandom(pool);
+    return name ?? '';
+  });
+
   const [state, setState] = useState<SlotState>('gif');
 
   const wrapperClass = `w-full aspect-[3/2] rounded-2xl overflow-hidden bg-gold/5 ${className}`;
 
-  if (state === 'error') {
+  if (!resolvedName || state === 'error') {
     return (
       <div
         className={`w-full aspect-[3/2] bg-gold/5 border border-gold/20 rounded-2xl flex flex-col items-center justify-center gap-1 ${className}`}
@@ -23,7 +33,7 @@ export default function GifSlot({ name, className = '' }: Props) {
           media
         </span>
         <span className="text-foreground-muted text-xs font-body">
-          {name}.gif
+          {resolvedName || name}
         </span>
       </div>
     );
@@ -33,7 +43,7 @@ export default function GifSlot({ name, className = '' }: Props) {
     return (
       <div className={wrapperClass}>
         <video
-          src={`/gifs/${name}.mp4`}
+          src={`/gifs/${resolvedName}.mp4`}
           autoPlay
           loop
           muted
@@ -45,13 +55,13 @@ export default function GifSlot({ name, className = '' }: Props) {
     );
   }
 
-  // Tentativo gif — se fallisce prova mp4
+  // Tentativo gif → fallback mp4
   return (
     <div className={wrapperClass}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={`/gifs/${name}.gif`}
-        alt={name}
+        src={`/gifs/${resolvedName}.gif`}
+        alt={resolvedName}
         onError={() => setState('mp4')}
         className="w-full h-full object-cover"
         loading="eager"
