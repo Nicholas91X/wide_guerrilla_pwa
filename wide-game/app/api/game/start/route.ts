@@ -21,10 +21,10 @@ export async function POST(request: NextRequest) {
 
     const userPrompt = `Prodotto: "${product}"
 
-Presenta questo prodotto all'imprenditore: 2-3 righe di introduzione ironica e grottesca.
-Fornisci anche una frase sola su prezzo consigliato e target di mercato (ironica, stile "Prezzo consigliato: €X. Target: [descrizione comica]").
-Poi presenta la Sfida 1 "Il Lancio": come vuole presentare il prodotto al mercato italiano?
-Fornisci esattamente 3 opzioni numeriche, brevi, credibili ma destinate al disastro.`;
+Presenta questo prodotto al marketer sfidante: 2-3 righe di introduzione ironica e grottesca.
+Fornisci anche il target di mercato ironico (solo target, nessun prezzo).
+Poi presenta la Sfida 1 "Il Posizionamento": come vuole posizionare e lanciare il prodotto nel mercato italiano?
+Fornisci esattamente 3 opzioni numeriche di marketing, brevi, credibili ma destinate al disastro.`;
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
@@ -52,7 +52,7 @@ Fornisci esattamente 3 opzioni numeriche, brevi, credibili ma destinate al disas
               },
               pitch: {
                 type: 'string',
-                description: 'Una frase su prezzo consigliato e target, ironica. Es: "Prezzo consigliato: €89. Target: chiunque abbia un addome." Max 15 parole.',
+                description: 'Solo il target ironico. Formato ESATTO: "Target: [descrizione ironica]. Buona fortuna." Esempio: "Target: chiunque abbia già perso i risparmi una volta. Buona fortuna." Max 12 parole totali.',
               },
             },
             required: ['narrative', 'challenge', 'options', 'pitch'],

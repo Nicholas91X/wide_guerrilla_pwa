@@ -4,9 +4,9 @@ import { anthropic, SYSTEM_PROMPT } from '@/lib/anthropic';
 type PreviousStep = { choice: string; output: string };
 
 const STEP_NAMES: Record<1 | 2 | 3, string> = {
-  1: 'Il Lancio',
-  2: 'La Crisi Operativa',
-  3: "L'Ultima Spiaggia",
+  1: 'Il Posizionamento',
+  2: 'La Campagna',
+  3: 'Il Piano B',
 };
 
 export async function POST(request: NextRequest) {
@@ -36,18 +36,18 @@ export async function POST(request: NextRequest) {
     let userPrompt: string;
     if (step === 1) {
       userPrompt = `Prodotto: "${product}"
-L'imprenditore ha scelto come strategia di lancio: "${choice}"
+Il marketer ha scelto come strategia di posizionamento: "${choice}"
 Descrivi le conseguenze disastrose in 4-5 righe.
-Poi presenta la Sfida 2 "La Crisi Operativa" con 3 nuove opzioni numeriche.`;
+Poi presenta la Sfida 2 "La Campagna" con 3 nuove opzioni di marketing numeriche.`;
     } else {
       userPrompt = `Prodotto: "${product}"
 ${contextLines}
-L'imprenditore ha scelto: "${choice}"
+Il marketer ha scelto: "${choice}"
 Continua la storia tenendo conto di ciò che è già successo.
 Descrivi le conseguenze disastrose in 4-5 righe.${
         !isLastStep
-          ? `\nPoi presenta la Sfida ${step + 1} "${STEP_NAMES[(step + 1) as 2 | 3]}" con 3 nuove opzioni numeriche.`
-          : "\nQuesta è l'ultima mossa prima della bancarotta totale."
+          ? `\nPoi presenta la Sfida ${step + 1} "${STEP_NAMES[(step + 1) as 2 | 3]}" con 3 nuove opzioni di marketing numeriche.`
+          : "\nQuesta è l'ultima mossa di marketing prima del collasso totale."
       }`;
     }
 

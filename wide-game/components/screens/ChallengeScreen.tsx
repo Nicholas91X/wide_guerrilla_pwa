@@ -10,9 +10,9 @@ import ProductImage from '@/components/ui/ProductImage';
 import { VIDEO_POOLS } from '@/lib/videoPools';
 
 const STEP_TITLES: Record<1 | 2 | 3, string> = {
-  1: 'Il Lancio',
-  2: 'La Crisi Operativa',
-  3: "L'Ultima Spiaggia",
+  1: 'Il Posizionamento',
+  2: 'La Campagna',
+  3: 'Il Piano B',
 };
 
 // Divide il pitch in frasi: split su punto+spazio, punto+newline, oppure newline nudo
@@ -71,7 +71,7 @@ export default function ChallengeScreen({ step }: Props) {
           {/* Testo */}
           <div className="px-4 py-3">
             <p className="text-foreground-muted text-xs font-body uppercase tracking-wide mb-1">
-              Il tuo prodotto
+              Brief di marketing
             </p>
             <p className="text-foreground text-sm font-body font-semibold leading-snug mb-2">
               {state.product.name}

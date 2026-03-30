@@ -13,7 +13,7 @@ export default function IntroScreen() {
       {/* Header */}
       <div className="text-center">
         <p className="text-gold text-xs font-body tracking-widest uppercase mb-3">
-          WIDE Studio Digitale presenta
+          WIDE Studio Digitale ti sfida
         </p>
         <h1 className="font-display text-4xl text-foreground leading-tight">
           Imprenditore
@@ -30,15 +30,11 @@ export default function IntroScreen() {
       {/* Copy + CTA */}
       <div className="w-full max-w-xs text-center">
         <p className="text-foreground-muted text-sm font-body leading-relaxed mb-8">
-          🎩 BENVENUTO, IMPRENDITORE
+          Tre decisioni di marketing.
           <br />
-          Il mercato è crudele. I forti sopravvivono.
+          Un prodotto che il mercato non sa di volere.
           <br />
-          I deboli aprono un B&B.
-          <br />
-          Oggi la tua missione è lanciare sul mercato
-          <br />
-          italiano un nuovo prodotto.
+          Dimostra di saper vendere.
         </p>
         {error && (
           <p className="text-red-400 text-xs font-body text-center mb-4">{error}</p>
@@ -54,7 +50,7 @@ export default function IntroScreen() {
               Preparando...
             </span>
           ) : (
-            'Inizia'
+            'Accetta la sfida'
           )}
         </button>
       </div>
