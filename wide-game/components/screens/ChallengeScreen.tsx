@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import LoadingState from '@/components/ui/LoadingState';
 import GifSlot from '@/components/ui/GifSlot';
+import CyclingIcon from '@/components/ui/CyclingIcon';
 import TypewriterBlock from '@/components/ui/TypewriterBlock';
 import ProductImage from '@/components/ui/ProductImage';
 import { VIDEO_POOLS } from '@/lib/videoPools';
@@ -103,7 +104,7 @@ export default function ChallengeScreen({ step }: Props) {
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-background/40 border-t-background rounded-full animate-spin inline-block" />
+                    <CyclingIcon />
                     Un momento...
                   </span>
                 ) : (

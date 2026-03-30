@@ -2,6 +2,7 @@
 
 import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
+import CyclingIcon from '@/components/ui/CyclingIcon';
 
 export default function IntroScreen() {
   const { startGame, loading, error } = useGame();
@@ -49,7 +50,7 @@ export default function IntroScreen() {
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
-              <span className="w-4 h-4 border-2 border-background/40 border-t-background rounded-full animate-spin inline-block" />
+              <CyclingIcon />
               Preparando...
             </span>
           ) : (

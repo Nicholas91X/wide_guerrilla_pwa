@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GameProvider, useGame } from '@/contexts/GameContext';
 import PreIntroScreen from './screens/PreIntroScreen';
@@ -14,6 +14,10 @@ function GameContent() {
   const [preIntroDone, setPreIntroDone] = useState(false);
 
   const key = !preIntroDone ? 'preintro' : state ? String(state.currentStep) : 'intro';
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [key]);
 
   let screen: React.ReactNode;
   if (!preIntroDone) screen = <PreIntroScreen onReady={() => setPreIntroDone(true)} />;
