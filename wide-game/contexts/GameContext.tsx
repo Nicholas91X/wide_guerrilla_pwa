@@ -15,12 +15,29 @@ import productsData from '@/data/products.json';
 interface GameContextType {
   state: GameState | null;
   loading: boolean;
+  error: string | null;
   startGame: () => Promise<void>;
   chooseOption: (choice: string) => Promise<void>;
   continueToNext: () => Promise<void>;
   proceedToContact: () => void;
   submitContact: (type: 'email' | 'whatsapp', value: string) => void;
   skipContact: () => void;
+}
+
+// ─── Fetch con timeout ───────────────────────────────────────────────────────
+
+async function fetchWithTimeout(
+  url: string,
+  options: RequestInit,
+  timeoutMs = 25000
+): Promise<Response> {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(id);
+  }
 }
 
 // ─── Session save helper ─────────────────────────────────────────────────────
@@ -80,17 +97,19 @@ function makeInitialSteps(): [StepData, StepData, StepData] {
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // ── startGame ──────────────────────────────────────────────────────────────
   const startGame = useCallback(async () => {
     if (loading) return;
     setLoading(true);
+    setError(null);
 
     const product = pickRandomProduct();
     const sessionId = crypto.randomUUID();
 
     try {
-      const res = await fetch('/api/game/start', {
+      const res = await fetchWithTimeout('/api/game/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ product: product.name }),
@@ -125,6 +144,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
       });
     } catch (err) {
       console.error('[startGame]', err);
+      const isTimeout = err instanceof Error && err.name === 'AbortError';
+      setError(isTimeout
+        ? 'Il server ci ha messo troppo. Riprova.'
+        : 'Qualcosa è andato storto. Riprova.');
     } finally {
       setLoading(false);
     }
@@ -156,7 +179,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         .map((s) => ({ choice: s.choice!, output: s.output! }));
 
       try {
-        const res = await fetch('/api/game/choice', {
+        const res = await fetchWithTimeout('/api/game/choice', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -225,7 +248,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       // Step 3: chiama /conclude per generare il testo di bancarotta
       setLoading(true);
       try {
-        const res = await fetch('/api/game/conclude', {
+        const res = await fetchWithTimeout('/api/game/conclude', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -280,6 +303,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       value={{
         state,
         loading,
+        error,
         startGame,
         chooseOption,
         continueToNext,

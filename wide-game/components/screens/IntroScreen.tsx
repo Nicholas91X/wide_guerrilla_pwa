@@ -4,7 +4,7 @@ import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
 
 export default function IntroScreen() {
-  const { startGame, loading } = useGame();
+  const { startGame, loading, error } = useGame();
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between px-6 py-12">
@@ -39,6 +39,9 @@ export default function IntroScreen() {
           <br />
           italiano un nuovo prodotto.
         </p>
+        {error && (
+          <p className="text-red-400 text-xs font-body text-center mb-4">{error}</p>
+        )}
         <button
           onClick={startGame}
           disabled={loading}
