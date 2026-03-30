@@ -15,14 +15,15 @@ const STEP_TITLES: Record<1 | 2 | 3, string> = {
   3: "L'Ultima Spiaggia",
 };
 
-// Divide il pitch in frasi (split su ". ") per il rendering a paragrafi
+// Divide il pitch in frasi: split su punto+spazio, punto+newline, oppure newline nudo
 function splitPitch(text: string): string[] {
-  const parts = text.split(/\.\s+/);
+  const parts = text.split(/\.\s+|\n+/);
   return parts
     .map((p, i) => {
       const t = p.trim();
       if (!t) return null;
-      return i < parts.length - 1 ? t + '.' : t;
+      // Riaggiunge il punto rimosso dallo split, solo se non già presente
+      return i < parts.length - 1 && !/[.!?]$/.test(t) ? t + '.' : t;
     })
     .filter(Boolean) as string[];
 }
@@ -76,7 +77,7 @@ export default function ChallengeScreen({ step }: Props) {
               {state.product.name}
             </p>
             {state.pitch && splitPitch(state.pitch).map((line, i) => (
-              <p key={i} className="text-foreground-muted text-xs font-body leading-snug mt-1.5">
+              <p key={i} className="text-foreground-muted text-xs font-body leading-snug mt-2">
                 {line}
               </p>
             ))}
