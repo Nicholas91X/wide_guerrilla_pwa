@@ -15,13 +15,37 @@ const outfit = Outfit({
   display: 'swap',
 });
 
+const BASE_URL = 'https://game.widestudiodigitale.com';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: 'Imprenditore per un Giorno',
-  description: 'Riesci a sopravvivere un giorno nel mondo del business?',
+  description: 'Ti diamo un prodotto impossibile e tre decisioni strategiche da prendere. Nel mercato italiano.',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'WIDE Game',
+  },
+  openGraph: {
+    type: 'website',
+    url: BASE_URL,
+    siteName: 'WIDE Studio Digitale',
+    title: 'Imprenditore per un Giorno',
+    description: 'Ti diamo un prodotto impossibile e tre decisioni strategiche da prendere. Nel mercato italiano.',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Imprenditore per un Giorno — WIDE Studio Digitale',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Imprenditore per un Giorno',
+    description: 'Ti diamo un prodotto impossibile e tre decisioni strategiche da prendere. Nel mercato italiano.',
+    images: ['/opengraph-image'],
   },
 };
 
