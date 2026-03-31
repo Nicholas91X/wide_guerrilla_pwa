@@ -11,7 +11,7 @@ const ALL = ['gif_1', 'gif_2', 'gif_3', 'gif_4', 'gif_5', 'gif_6', 'gif_7', 'gif
 export const VIDEO_POOLS = {
   // Sfida 1 — pool dedicata
   'challenge-1': ['posizionamento_1', 'posizionamento_2'] as const,
-  'challenge-2': ALL,
+  'challenge-2': ['campagna_1', 'campagna_2'] as const,
   'challenge-3': ALL,
 
   // Fine storia e reveal WIDE — stessa pool per ora
