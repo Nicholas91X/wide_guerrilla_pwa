@@ -16,7 +16,7 @@ interface GameContextType {
   state: GameState | null;
   loading: boolean;
   error: string | null;
-  startGame: () => Promise<void>;
+  startGame: (playerName: string) => Promise<void>;
   chooseOption: (choice: string) => Promise<void>;
   continueToNext: () => Promise<void>;
   proceedToContact: () => void;
@@ -49,6 +49,7 @@ async function saveSession(s: GameState): Promise<void> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         sessionId: s.sessionId,
+        playerName: s.playerName,
         productName: s.product.name,
         step1Choice: s.steps[0].choice,
         step1Output: s.steps[0].output,
@@ -57,6 +58,8 @@ async function saveSession(s: GameState): Promise<void> {
         step3Choice: s.steps[2].choice,
         step3Output: s.steps[2].output,
         conclusion: s.conclusion,
+        totalLoss: s.totalLoss,
+        lastWords: s.lastWords,
         contactType: s.contact.type,
         contactValue: s.contact.value,
         completed: s.contact.submitted,
@@ -100,7 +103,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
 
   // ── startGame ──────────────────────────────────────────────────────────────
-  const startGame = useCallback(async () => {
+  const startGame = useCallback(async (playerName: string) => {
     if (loading) return;
     setLoading(true);
     setError(null);
@@ -112,7 +115,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const res = await fetchWithTimeout('/api/game/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product: product.name }),
+        body: JSON.stringify({ product: product.name, playerName }),
       });
 
       if (!res.ok) throw new Error(`/api/game/start → ${res.status}`);
@@ -135,11 +138,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
       setState({
         sessionId,
+        playerName,
         product,
         pitch: data.pitch ?? null,
         currentStep: 1,
         steps,
         conclusion: null,
+        totalLoss: null,
+        lastWords: null,
         contact: { type: null, value: null, submitted: false },
       });
     } catch (err) {
@@ -154,7 +160,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, [loading]);
 
   // ── chooseOption ───────────────────────────────────────────────────────────
-  // Aggiornamento ottimistico: registra subito la scelta, poi carica l'output AI
   const chooseOption = useCallback(
     async (choice: string) => {
       if (!state || typeof state.currentStep !== 'number' || loading) return;
@@ -162,7 +167,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const step = state.currentStep as 1 | 2 | 3;
       const idx = step - 1;
 
-      // 1. Registra la scelta immediatamente (stato ottimistico)
       setState((prev) => {
         if (!prev) return prev;
         const newSteps = [...prev.steps] as typeof prev.steps;
@@ -172,7 +176,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
       setLoading(true);
 
-      // 2. Costruisce il contesto degli step precedenti
       const previousSteps = state.steps
         .slice(0, idx)
         .filter((s) => s.choice !== null && s.output !== null)
@@ -196,13 +199,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
           output: string;
           challenge?: string;
           options?: string[];
+          total_loss?: string;
+          last_words?: string;
         };
 
-        // 3. Aggiorna output dello step corrente + dati dello step successivo
         setState((prev) => {
           if (!prev) return prev;
           const newSteps = [...prev.steps] as typeof prev.steps;
-
           newSteps[idx] = { ...newSteps[idx], choice, output: data.output };
 
           if (step < 3 && data.challenge && data.options) {
@@ -213,16 +216,29 @@ export function GameProvider({ children }: { children: ReactNode }) {
             };
           }
 
-          return { ...prev, steps: newSteps };
+          return {
+            ...prev,
+            steps: newSteps,
+            // Salva totalLoss e lastWords solo quando arrivano dallo step 3
+            ...(step === 3 && {
+              totalLoss: data.total_loss ?? '€12.450',
+              lastWords: data.last_words ?? 'Ne è valsa la pena',
+            }),
+          };
         });
 
-        // Fire-and-forget: salva la sessione con l'output appena ricevuto
         const updatedSteps = [...state.steps] as typeof state.steps;
         updatedSteps[idx] = { ...updatedSteps[idx], choice, output: data.output };
-        void saveSession({ ...state, steps: updatedSteps });
+        void saveSession({
+          ...state,
+          steps: updatedSteps,
+          ...(step === 3 && {
+            totalLoss: data.total_loss ?? '€12.450',
+            lastWords: data.last_words ?? 'Ne è valsa la pena',
+          }),
+        });
       } catch (err) {
         console.error('[chooseOption]', err);
-        // Rollback: rimuove la scelta ottimistica in caso di errore
         setState((prev) => {
           if (!prev) return prev;
           const newSteps = [...prev.steps] as typeof prev.steps;
@@ -245,7 +261,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     } else if (state.currentStep === 2) {
       setState({ ...state, currentStep: 3 });
     } else if (state.currentStep === 3) {
-      // Step 3: chiama /conclude per generare il testo di bancarotta
       setLoading(true);
       try {
         const res = await fetchWithTimeout('/api/game/conclude', {

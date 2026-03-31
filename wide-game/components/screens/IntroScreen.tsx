@@ -1,11 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
 import CyclingIcon from '@/components/ui/CyclingIcon';
 
 export default function IntroScreen() {
   const { startGame, loading, error } = useGame();
+  const [playerName, setPlayerName] = useState('');
+
+  const canStart = playerName.trim().length > 0;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between px-6 py-12">
@@ -36,12 +40,23 @@ export default function IntroScreen() {
           <br />
           Dimostra di saper vendere.
         </p>
+
+        {/* Nome giocatore */}
+        <input
+          type="text"
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+          placeholder="Come ti chiami, imprenditore?"
+          disabled={loading}
+          className="w-full bg-transparent border border-gold/45 text-foreground font-body px-4 py-3 rounded-xl mb-6 focus:outline-none focus:border-gold placeholder:text-foreground-muted/50 transition-colors disabled:opacity-50"
+        />
+
         {error && (
           <p className="text-red-400 text-xs font-body text-center mb-4">{error}</p>
         )}
         <button
-          onClick={startGame}
-          disabled={loading}
+          onClick={() => startGame(playerName.trim())}
+          disabled={loading || !canStart}
           className="w-full bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
         >
           {loading ? (

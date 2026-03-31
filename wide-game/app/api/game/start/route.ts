@@ -13,13 +13,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: message }, { status: 429 });
     }
 
-    const { product } = (await request.json()) as { product: string };
+    const { product, playerName } = (await request.json()) as { product: string; playerName: string };
 
     if (!product || typeof product !== 'string') {
       return NextResponse.json({ error: 'product required' }, { status: 400 });
     }
 
-    const userPrompt = `Prodotto: "${product}"
+    const userPrompt = `Il nome del giocatore è: ${playerName || 'Imprenditore'}
+Prodotto: "${product}"
 
 Presenta questo prodotto al marketer sfidante: 2-3 righe di introduzione ironica e grottesca.
 Fornisci anche il target di mercato ironico (solo target, nessun prezzo).
