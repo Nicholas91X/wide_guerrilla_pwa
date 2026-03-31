@@ -16,7 +16,7 @@ export const VIDEO_POOLS = {
 
   // Fine storia e reveal WIDE — stessa pool per ora
   conclusion: ['reveal'] as const,
-  reveal:     ALL,
+  reveal:     ['finale'] as const,
 } as const satisfies Record<string, readonly string[]>;
 
 export type PoolKey = keyof typeof VIDEO_POOLS;
