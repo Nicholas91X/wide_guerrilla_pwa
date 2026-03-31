@@ -9,8 +9,8 @@
 const ALL = ['gif_1', 'gif_2', 'gif_3', 'gif_4', 'gif_5', 'gif_6', 'gif_7', 'gif_8'] as const;
 
 export const VIDEO_POOLS = {
-  // Le tre sfide — stessa pool, video diverso ad ogni step grazie al remount
-  'challenge-1': ALL,
+  // Sfida 1 — pool dedicata
+  'challenge-1': ['posizionamento_1', 'posizionamento_2'] as const,
   'challenge-2': ALL,
   'challenge-3': ALL,
 
