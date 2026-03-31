@@ -54,7 +54,7 @@ export default function ContactScreen() {
             alt="WIDE Studio Digitale"
             width={80}
             height={80}
-            className="mx-auto"
+            className="mx-auto rounded-full"
           />
         </motion.div>
 

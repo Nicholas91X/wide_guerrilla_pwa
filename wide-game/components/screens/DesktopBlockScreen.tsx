@@ -21,7 +21,7 @@ export default function DesktopBlockScreen() {
           alt="WIDE Studio Digitale"
           width={64}
           height={64}
-          className="mx-auto"
+          className="mx-auto rounded-full"
         />
       </div>
     </div>
