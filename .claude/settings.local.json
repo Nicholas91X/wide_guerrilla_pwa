@@ -25,7 +25,12 @@
       "Bash(for i:*)",
       "Bash(ffmpeg -version)",
       "Bash(SRC=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.mp4\" OUT=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.webm\" __NEW_LINE_caf0360ff5a06b4a__ ffmpeg -y -i \"$SRC\" -vf \"colorkey=white:0.25:0.15,format=yuva420p\" -c:v libvpx-vp9 -auto-alt-ref 0 -b:v 0 -crf 30 \"$OUT\")",
-      "Bash(SRC=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.mp4\" OUT=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.webm\" __NEW_LINE_812fcf4ef1c5df8d__ ffmpeg -y -i \"$SRC\" -vf \"colorkey=white:0.05:0.02,format=yuva420p\" -c:v libvpx-vp9 -auto-alt-ref 0 -b:v 0 -crf 30 \"$OUT\")"
+      "Bash(SRC=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.mp4\" OUT=\"/c/Users/Principale/Desktop/Progetti/wide_guerilla_pwa/wide-game/public/gifs/loading.webm\" __NEW_LINE_812fcf4ef1c5df8d__ ffmpeg -y -i \"$SRC\" -vf \"colorkey=white:0.05:0.02,format=yuva420p\" -c:v libvpx-vp9 -auto-alt-ref 0 -b:v 0 -crf 30 \"$OUT\")",
+      "Bash(mv \"patch-dimagranti-a-frequenze-5__54771.png\" \"product-1.png\")",
+      "Bash(mv \"crema-termogenica-che-converte__54773.png\" \"product-2.png\")",
+      "Bash(mv \"siero-viso-al-veleno-di-medusa__54774.png\" \"product-3.png\")",
+      "Bash(mv \"braccialetto-in-grafene-che-mi__54776.png\" \"product-4.png\")",
+      "Bash(mv \"caricatore-solare-per-smartpho__54778.png\" \"product-5.png\")"
     ]
   }
 }
