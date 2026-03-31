@@ -34,7 +34,7 @@ export default function ProductImage({ productId }: Props) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={`/products/${productId}.png`}
+      src={`/products/product-${productId}.png`}
       alt=""
       onError={() => setErrored(true)}
       className="w-full h-[180px] object-cover"
