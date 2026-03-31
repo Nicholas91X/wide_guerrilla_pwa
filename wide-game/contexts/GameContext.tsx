@@ -10,11 +10,16 @@ import {
 import type { GameState, Product, StepData } from '@/types/game';
 import productsData from '@/data/products.json';
 
+// ─── Costanti retry ───────────────────────────────────────────────────────────
+
+const MAX_RETRIES = 4;
+
 // ─── Tipi del context ────────────────────────────────────────────────────────
 
 interface GameContextType {
   state: GameState | null;
   loading: boolean;
+  retryCount: number;
   error: string | null;
   startGame: (playerName: string) => Promise<void>;
   chooseOption: (choice: string) => Promise<void>;
@@ -24,7 +29,11 @@ interface GameContextType {
   skipContact: () => void;
 }
 
-// ─── Fetch con timeout ───────────────────────────────────────────────────────
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((r) => setTimeout(r, ms));
+}
 
 async function fetchWithTimeout(
   url: string,
@@ -38,6 +47,33 @@ async function fetchWithTimeout(
   } finally {
     clearTimeout(id);
   }
+}
+
+/** Esegue fetch con retry automatico su 503 (overloaded). Aggiorna retryCount ad ogni tentativo. */
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit,
+  onAttempt: (n: number) => void
+): Promise<Response> {
+  let lastRes: Response | null = null;
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    onAttempt(attempt);
+    try {
+      const res = await fetchWithTimeout(url, options);
+      if (res.status === 503 && attempt < MAX_RETRIES) {
+        lastRes = res;
+        await sleep(1500 * attempt);
+        continue;
+      }
+      return res;
+    } catch (err) {
+      // Non ritentare su timeout o ultimo tentativo
+      const isAbort = err instanceof Error && err.name === 'AbortError';
+      if (isAbort || attempt >= MAX_RETRIES) throw err;
+      await sleep(1500 * attempt);
+    }
+  }
+  return lastRes!;
 }
 
 // ─── Session save helper ─────────────────────────────────────────────────────
@@ -80,7 +116,7 @@ export function useGame(): GameContextType {
   return ctx;
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Helpers state ────────────────────────────────────────────────────────────
 
 function pickRandomProduct(): Product {
   const list = productsData.products;
@@ -95,11 +131,19 @@ function makeInitialSteps(): [StepData, StepData, StepData] {
   return [emptyStep(), emptyStep(), emptyStep()];
 }
 
+function errorMessage(err: unknown): string {
+  if (err instanceof Error && err.name === 'AbortError') {
+    return 'Il server ci ha messo troppo. Riprova.';
+  }
+  return 'I server di Anthropic sono sovraccarichi. Riprova tra qualche minuto.';
+}
+
 // ─── Provider ────────────────────────────────────────────────────────────────
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState | null>(null);
   const [loading, setLoading] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   // ── startGame ──────────────────────────────────────────────────────────────
@@ -107,16 +151,21 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (loading) return;
     setLoading(true);
     setError(null);
+    setRetryCount(0);
 
     const product = pickRandomProduct();
     const sessionId = crypto.randomUUID();
 
     try {
-      const res = await fetchWithTimeout('/api/game/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product: product.name, playerName }),
-      });
+      const res = await fetchWithRetry(
+        '/api/game/start',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ product: product.name, playerName }),
+        },
+        setRetryCount
+      );
 
       if (!res.ok) throw new Error(`/api/game/start → ${res.status}`);
 
@@ -150,12 +199,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
       });
     } catch (err) {
       console.error('[startGame]', err);
-      const isTimeout = err instanceof Error && err.name === 'AbortError';
-      setError(isTimeout
-        ? 'Il server ci ha messo troppo. Riprova.'
-        : 'Qualcosa è andato storto. Riprova.');
+      setError(errorMessage(err));
     } finally {
       setLoading(false);
+      setRetryCount(0);
     }
   }, [loading]);
 
@@ -175,6 +222,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       });
 
       setLoading(true);
+      setRetryCount(0);
 
       const previousSteps = state.steps
         .slice(0, idx)
@@ -182,16 +230,20 @@ export function GameProvider({ children }: { children: ReactNode }) {
         .map((s) => ({ choice: s.choice!, output: s.output! }));
 
       try {
-        const res = await fetchWithTimeout('/api/game/choice', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            product: state.product.name,
-            step,
-            choice,
-            previousSteps,
-          }),
-        });
+        const res = await fetchWithRetry(
+          '/api/game/choice',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              product: state.product.name,
+              step,
+              choice,
+              previousSteps,
+            }),
+          },
+          setRetryCount
+        );
 
         if (!res.ok) throw new Error(`/api/game/choice → ${res.status}`);
 
@@ -219,7 +271,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
           return {
             ...prev,
             steps: newSteps,
-            // Salva totalLoss e lastWords solo quando arrivano dallo step 3
             ...(step === 3 && {
               totalLoss: data.total_loss ?? '€12.450',
               lastWords: data.last_words ?? 'Ne è valsa la pena',
@@ -239,14 +290,17 @@ export function GameProvider({ children }: { children: ReactNode }) {
         });
       } catch (err) {
         console.error('[chooseOption]', err);
+        // Ripristina la scelta come non effettuata
         setState((prev) => {
           if (!prev) return prev;
           const newSteps = [...prev.steps] as typeof prev.steps;
           newSteps[idx] = { ...newSteps[idx], choice: null };
           return { ...prev, steps: newSteps };
         });
+        setError(errorMessage(err));
       } finally {
         setLoading(false);
+        setRetryCount(0);
       }
     },
     [state, loading]
@@ -262,18 +316,23 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setState({ ...state, currentStep: 3 });
     } else if (state.currentStep === 3) {
       setLoading(true);
+      setRetryCount(0);
       try {
-        const res = await fetchWithTimeout('/api/game/conclude', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            product: state.product.name,
-            steps: state.steps.map((s) => ({
-              choice: s.choice ?? '',
-              output: s.output ?? '',
-            })),
-          }),
-        });
+        const res = await fetchWithRetry(
+          '/api/game/conclude',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              product: state.product.name,
+              steps: state.steps.map((s) => ({
+                choice: s.choice ?? '',
+                output: s.output ?? '',
+              })),
+            }),
+          },
+          setRetryCount
+        );
 
         if (!res.ok) throw new Error(`/api/game/conclude → ${res.status}`);
 
@@ -284,8 +343,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
         void saveSession(newState);
       } catch (err) {
         console.error('[continueToNext/conclude]', err);
+        setError(errorMessage(err));
       } finally {
         setLoading(false);
+        setRetryCount(0);
       }
     }
   }, [state, loading]);
@@ -318,6 +379,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       value={{
         state,
         loading,
+        retryCount,
         error,
         startGame,
         chooseOption,

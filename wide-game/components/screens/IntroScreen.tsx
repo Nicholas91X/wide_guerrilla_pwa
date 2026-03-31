@@ -6,7 +6,7 @@ import GifSlot from '@/components/ui/GifSlot';
 import CyclingIcon from '@/components/ui/CyclingIcon';
 
 export default function IntroScreen() {
-  const { startGame, loading, error } = useGame();
+  const { startGame, loading, retryCount, error } = useGame();
   const [playerName, setPlayerName] = useState('');
 
   const canStart = playerName.trim().length > 0;
@@ -68,6 +68,11 @@ export default function IntroScreen() {
             'Accetta la sfida'
           )}
         </button>
+        {loading && retryCount > 1 && (
+          <p className="text-foreground-muted/60 text-xs font-body text-center mt-3">
+            Nuovo tentativo... ({retryCount} di 4)
+          </p>
+        )}
       </div>
 
     </div>

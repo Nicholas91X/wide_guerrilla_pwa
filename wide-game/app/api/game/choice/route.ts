@@ -135,6 +135,12 @@ Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.${
     }
   } catch (err) {
     console.error('[/api/game/choice]', err);
+    const isOverloaded =
+      typeof err === 'object' && err !== null &&
+      'status' in err && (err as { status: number }).status === 529;
+    if (isOverloaded) {
+      return NextResponse.json({ error: 'overloaded' }, { status: 503 });
+    }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 
 export const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
+  maxRetries: 0,
 });
 
 export const SYSTEM_PROMPT = `Sei il narratore di "Imprenditore per un Giorno", un gioco di WIDE Studio Digitale.

@@ -72,6 +72,12 @@ Fornisci esattamente 3 opzioni numeriche di marketing, brevi, credibili ma desti
     return NextResponse.json(toolBlock.input);
   } catch (err) {
     console.error('[/api/game/start]', err);
+    const isOverloaded =
+      typeof err === 'object' && err !== null &&
+      'status' in err && (err as { status: number }).status === 529;
+    if (isOverloaded) {
+      return NextResponse.json({ error: 'overloaded' }, { status: 503 });
+    }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

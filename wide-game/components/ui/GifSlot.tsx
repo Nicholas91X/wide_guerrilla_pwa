@@ -20,7 +20,7 @@ export default function GifSlot({ name, pool, className = '' }: Props) {
     return name ?? '';
   });
 
-  const [state, setState] = useState<SlotState>('gif');
+  const [state, setState] = useState<SlotState>('mp4');
 
   const wrapperClass = `w-full aspect-[3/2] rounded-2xl overflow-hidden bg-gold/10 ${className}`;
 

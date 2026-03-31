@@ -59,6 +59,12 @@ Firma: WIDE Studio Digitale`;
     return NextResponse.json(toolBlock.input);
   } catch (err) {
     console.error('[/api/game/conclude]', err);
+    const isOverloaded =
+      typeof err === 'object' && err !== null &&
+      'status' in err && (err as { status: number }).status === 529;
+    if (isOverloaded) {
+      return NextResponse.json({ error: 'overloaded' }, { status: 503 });
+    }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
