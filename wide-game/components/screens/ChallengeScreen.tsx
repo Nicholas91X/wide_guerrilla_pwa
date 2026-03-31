@@ -134,18 +134,30 @@ export default function ChallengeScreen({ step }: Props) {
             initial="hidden"
             animate="show"
           >
-            {stepData.options.map((option, i) => (
+            {stepData.options.map((option, i) => {
+              const isBonus = step === 3 && i === stepData.options.length - 1;
+              return (
               <motion.button
                 key={i}
                 variants={optionItem}
                 onClick={() => chooseOption(option)}
                 disabled={loading}
-                className="text-left border border-gold/30 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:border-gold hover:bg-gold/5 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className={
+                  isBonus
+                    ? 'text-left border-2 border-gold bg-gold/10 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:bg-gold/20 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed animate-pulse'
+                    : 'text-left border border-gold/30 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:border-gold hover:bg-gold/5 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed'
+                }
               >
+                {isBonus && (
+                  <span className="block text-gold text-[10px] font-body font-semibold uppercase tracking-widest mb-1">
+                    Asso nella manica
+                  </span>
+                )}
                 <span className="text-gold font-semibold mr-2">{i + 1}.</span>
                 {option.replace(/^\d+[.)]\s*/, '')}
               </motion.button>
-            ))}
+              );
+            })}
           </motion.div>
         </div>
       )}

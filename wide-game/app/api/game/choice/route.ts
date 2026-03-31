@@ -37,17 +37,17 @@ export async function POST(request: NextRequest) {
     if (step === 1) {
       userPrompt = `Prodotto: "${product}"
 Il marketer ha scelto come strategia di posizionamento: "${choice}"
-Descrivi le conseguenze disastrose in 4-5 righe.
-Poi presenta la Sfida 2 "La Campagna" con 3 nuove opzioni di marketing numeriche.`;
+Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.
+Poi presenta la Sfida 2 "La Campagna" con 3 opzioni.`;
     } else {
       userPrompt = `Prodotto: "${product}"
 ${contextLines}
 Il marketer ha scelto: "${choice}"
 Continua la storia tenendo conto di ciò che è già successo.
-Descrivi le conseguenze disastrose in 4-5 righe.${
+Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.${
         !isLastStep
-          ? `\nPoi presenta la Sfida ${step + 1} "${STEP_NAMES[(step + 1) as 2 | 3]}" con 3 nuove opzioni di marketing numeriche.`
-          : "\nQuesta è l'ultima mossa di marketing prima del collasso totale."
+          ? `\nPoi presenta la Sfida 3 "Il Piano B" con 4 opzioni: le prime 3 sono mosse normali, la quarta è l'opzione estero (bonus).`
+          : "\nQuesta è l'ultima mossa prima del collasso totale."
       }`;
     }
 
@@ -108,7 +108,7 @@ Descrivi le conseguenze disastrose in 4-5 righe.${
                 options: {
                   type: 'array',
                   items: { type: 'string' },
-                  description: 'Esattamente 3 opzioni di marketing (canale, messaggio, formato, target), max 15 parole ciascuna. Senza numero iniziale.',
+                  description: 'Per la Sfida 2 (La Campagna): esattamente 3 opzioni. Per la Sfida 3 (Il Piano B): esattamente 4 opzioni, la quarta è sempre l\'opzione estero (bonus). Max 20 parole ciascuna. Senza numero iniziale.',
                 },
               },
               required: ['output', 'challenge', 'options'],
