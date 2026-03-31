@@ -12,7 +12,7 @@ export const VIDEO_POOLS = {
   // Sfida 1 — pool dedicata
   'challenge-1': ['posizionamento_1', 'posizionamento_2'] as const,
   'challenge-2': ['campagna_1', 'campagna_2'] as const,
-  'challenge-3': ALL,
+  'challenge-3': ['pianob_1', 'pianob_2'] as const,
 
   // Fine storia e reveal WIDE — stessa pool per ora
   conclusion: ALL,
