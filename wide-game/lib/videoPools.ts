@@ -15,7 +15,7 @@ export const VIDEO_POOLS = {
   'challenge-3': ['pianob_1', 'pianob_2'] as const,
 
   // Fine storia e reveal WIDE — stessa pool per ora
-  conclusion: ALL,
+  conclusion: ['reveal'] as const,
   reveal:     ALL,
 } as const satisfies Record<string, readonly string[]>;
 
