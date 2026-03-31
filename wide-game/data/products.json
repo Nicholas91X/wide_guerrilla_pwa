@@ -1,18 +1,29 @@
 {
   "products": [
-    { "id": 1, "name": "Patch dimagranti da applicare durante il sonno con frequenze 5G", "category": "bellezza" },
-    { "id": 2, "name": "Siero anti-età a base di lacrime di coccodrillo biologico", "category": "bellezza" },
-    { "id": 3, "name": "Crema anti-cellulite attivabile solo alla luce della luna", "category": "bellezza" },
-    { "id": 4, "name": "Integratore di magnetite per allineare il metabolismo con i poli terrestri", "category": "bellezza" },
-    { "id": 5, "name": "Cintura vibrante sciogli-pancia da indossare durante le riunioni", "category": "bellezza" },
-    { "id": 6, "name": "Crema termogenica che trasforma l'ansia in calorie", "category": "bellezza" },
-    { "id": 7, "name": "Shampoo al placenta di alpaca per capelli da CEO", "category": "bellezza" },
-    { "id": 8, "name": "Guanti dimagranti in grafene da indossare mentre si mangia", "category": "bellezza" },
-    { "id": 9, "name": "Acqua di lusso in bottiglia di cristallo con certificato di purezza astrale", "category": "lifestyle" },
-    { "id": 10, "name": "Ombrelli personalizzati per cani con monogramma", "category": "lifestyle" },
-    { "id": 11, "name": "Candele profumate al profumo di mattina produttiva", "category": "lifestyle" },
-    { "id": 12, "name": "Corsi di comunicazione assertiva per gatti", "category": "formazione" },
-    { "id": 13, "name": "Consulenza astrologica per decisioni aziendali", "category": "consulenza" },
-    { "id": 14, "name": "Abbonamento mensile a calzini di design con aforismi neurologici", "category": "lifestyle" }
+    { "id": 1, "name": "Patch dimagranti a frequenze 5G", "price": "€89", "category": "bellezza" },
+    { "id": 2, "name": "Crema termogenica che converte l'ansia in calorie", "price": "€64", "category": "bellezza" },
+    { "id": 3, "name": "Siero viso al veleno di medusa microdosato", "price": "€56", "category": "bellezza" },
+
+    { "id": 4, "name": "Braccialetto in grafene che misura la produttività", "price": "€129", "category": "tech" },
+    { "id": 5, "name": "Caricatore solare per smartphone da balcone", "price": "€199", "category": "tech" },
+    { "id": 6, "name": "Auricolare con AI che corregge la postura", "price": "€249", "category": "tech" },
+
+    { "id": 7, "name": "Olio EVO con infusione di CBD", "price": "€38", "category": "food" },
+    { "id": 8, "name": "Grissini proteici al carbone attivo", "price": "€12", "category": "food" },
+    { "id": 9, "name": "Crackers di grillo tostato 'linea proteica", "price": "€7", "category": "food" },
+
+    { "id": 10, "name": "Corso online di leadership basato sull'ippoterapia", "price": "€490", "category": "formazione" },
+    { "id": 11, "name": "Masterclass di negoziazione con metodo arti marziali", "price": "€350", "category": "formazione" },
+    { "id": 12, "name": "Consulenza astrologica per decisioni aziendali", "price": "€180/mese", "category": "formazione" },
+
+    { "id": 13, "name": "Acqua alcalina in bottiglia di vetro con certificato energetico", "price": "€14", "category": "lifestyle" },
+    { "id": 14, "name": "Candela profumata 'Mattina Produttiva'", "price": "€42", "category": "lifestyle" },
+    { "id": 15, "name": "Calzini in bambù con aforismi motivazionali", "price": "€19/mese", "category": "lifestyle" },
+    { "id": 16, "name": "Cuscino ergonomico per riunioni oltre i 45 minuti", "price": "€89", "category": "lifestyle" },
+
+    { "id": 17, "name": "Software gestionale con intelligenza artificiale emotiva", "price": "€99/mese", "category": "B2B" },
+    { "id": 18, "name": "Distributore automatico di snack salutari per uffici", "price": "€2.400", "category": "B2B" },
+    { "id": 19, "name": "Servizio di team building basato sulla panificazione", "price": "€1.200/giornata", "category": "B2B" },
+    { "id": 20, "name": "Deodorante per ambienti con feromoni di produttività", "price": "€34", "category": "B2B" }
   ]
 }
