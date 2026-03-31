@@ -104,7 +104,7 @@ export default function ContactScreen() {
       </p>
 
       {/* Toggle email / WhatsApp — min 44px tap target */}
-      <div className="flex rounded-full border border-gold/30 p-1 mb-6">
+      <div className="flex rounded-full border border-gold/45 p-1 mb-6">
         {(['email', 'whatsapp'] as const).map((type) => (
           <button
             key={type}
@@ -130,7 +130,7 @@ export default function ContactScreen() {
         placeholder={
           contactType === 'email' ? 'la@tuaemail.com' : '+39 333 000 0000'
         }
-        className="w-full bg-transparent border border-gold/30 text-foreground font-body px-4 py-3 rounded-xl mb-4 focus:outline-none focus:border-gold placeholder:text-foreground-muted/40 transition-colors"
+        className="w-full bg-transparent border border-gold/45 text-foreground font-body px-4 py-3 rounded-xl mb-4 focus:outline-none focus:border-gold placeholder:text-foreground-muted/50 transition-colors"
       />
 
       {/* Testo esplicativo — cambia con fade al toggle */}

@@ -65,7 +65,7 @@ export default function ChallengeScreen({ step }: Props) {
 
       {/* Banner prodotto (solo step 1) */}
       {step === 1 && (
-        <div className="bg-gold/10 border border-gold/30 rounded-xl overflow-hidden mb-4">
+        <div className="bg-gold/15 border border-gold/40 rounded-xl overflow-hidden mb-4">
           {/* Immagine prodotto */}
           <ProductImage productId={state.product.id} />
           {/* Testo */}
@@ -145,7 +145,7 @@ export default function ChallengeScreen({ step }: Props) {
                 className={
                   isBonus
                     ? 'text-left border-2 border-gold bg-gold/10 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:bg-gold/20 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed animate-pulse'
-                    : 'text-left border border-gold/30 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:border-gold hover:bg-gold/5 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed'
+                    : 'text-left border border-gold/40 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:border-gold hover:bg-gold/10 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed'
                 }
               >
                 {isBonus && (

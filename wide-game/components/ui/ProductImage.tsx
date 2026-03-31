@@ -11,7 +11,7 @@ export default function ProductImage({ productId }: Props) {
 
   if (errored) {
     return (
-      <div className="w-full h-[180px] bg-gold/5 border-b border-gold/20 flex items-center justify-center">
+      <div className="w-full h-[180px] bg-gold/12 border-b border-gold/35 flex items-center justify-center">
         <svg
           width="40"
           height="40"
@@ -21,7 +21,7 @@ export default function ProductImage({ productId }: Props) {
           strokeWidth="1.2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-gold/30"
+          className="text-gold/50"
         >
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
           <line x1="3" y1="6" x2="21" y2="6" />

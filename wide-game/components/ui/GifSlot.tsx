@@ -22,12 +22,12 @@ export default function GifSlot({ name, pool, className = '' }: Props) {
 
   const [state, setState] = useState<SlotState>('gif');
 
-  const wrapperClass = `w-full aspect-[3/2] rounded-2xl overflow-hidden bg-gold/5 ${className}`;
+  const wrapperClass = `w-full aspect-[3/2] rounded-2xl overflow-hidden bg-gold/10 ${className}`;
 
   if (!resolvedName || state === 'error') {
     return (
       <div
-        className={`w-full aspect-[3/2] bg-gold/5 border border-gold/20 rounded-2xl flex flex-col items-center justify-center gap-1 ${className}`}
+        className={`w-full aspect-[3/2] bg-gold/10 border border-gold/35 rounded-2xl flex flex-col items-center justify-center gap-1 ${className}`}
       >
         <span className="text-foreground-muted/50 text-[10px] font-body uppercase tracking-widest">
           media

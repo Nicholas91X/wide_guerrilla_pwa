@@ -6,7 +6,7 @@ export default function LoadingState({ message = 'Stiamo contabilizzando i danni
   return (
     <div className="flex flex-col items-center gap-5 py-8">
       {/* Card bianca intenzionale — il video ha sfondo bianco non rimovibile */}
-      <div className="w-full max-w-[240px] rounded-2xl overflow-hidden border border-gold/20 shadow-[0_0_24px_rgba(201,150,58,0.08)]">
+      <div className="w-full max-w-[240px] rounded-2xl overflow-hidden border border-gold/35 shadow-[0_0_24px_rgba(201,150,58,0.15)]">
         <video
           src="/gifs/loading.mp4"
           autoPlay

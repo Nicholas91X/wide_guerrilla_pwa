@@ -52,7 +52,7 @@ export default function ConclusionScreen() {
             initial={{ opacity: 0, y: 12 }}
             animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.7, ease: 'easeOut' as const, delay: 0.2 }}
-            className="mt-6 bg-gold/15 border border-gold/40 rounded-2xl px-5 py-4"
+            className="mt-6 bg-gold/20 border border-gold/50 rounded-2xl px-5 py-4"
           >
             {signature.split('\n').filter(Boolean).map((line, i) => (
               <p
