@@ -12,6 +12,10 @@ interface SaveSessionBody {
   step3Choice?: string | null;
   step3Output?: string | null;
   conclusion?: string | null;
+  initialBudget?: number | null;
+  spentPhase1?: number | null;
+  spentPhase2?: number | null;
+  spentPhase3?: number | null;
   totalLoss?: string | null;
   lastWords?: string | null;
   contactType?: string | null;
@@ -42,6 +46,10 @@ export async function POST(request: NextRequest) {
         step_3_choice: body.step3Choice ?? null,
         step_3_output: body.step3Output ?? null,
         conclusion: body.conclusion ?? null,
+        initial_budget: body.initialBudget ?? 10000,
+        spent_phase_1: body.spentPhase1 ?? null,
+        spent_phase_2: body.spentPhase2 ?? null,
+        spent_phase_3: body.spentPhase3 ?? null,
         total_loss: body.totalLoss ?? null,
         last_words: body.lastWords ?? null,
         contact_type: body.contactType ?? null,

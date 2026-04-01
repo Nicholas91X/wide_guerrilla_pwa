@@ -10,9 +10,28 @@ import {
 import type { GameState, Product, StepData } from '@/types/game';
 import productsData from '@/data/products.json';
 
-// ─── Costanti retry ───────────────────────────────────────────────────────────
+// ─── Costanti ────────────────────────────────────────────────────────────────
 
 const MAX_RETRIES = 4;
+export const INITIAL_BUDGET = 10000;
+
+// ─── Helpers budget ──────────────────────────────────────────────────────────
+
+export function parseSpent(value: string | null): number {
+  if (!value) return 0;
+  // "€2.340" → 2340  (il punto è separatore migliaia in italiano)
+  return parseInt(value.replace('€', '').replace(/\./g, '').replace(',', '')) || 0;
+}
+
+export function computeCurrentBudget(steps: [StepData, StepData, StepData]): number {
+  return INITIAL_BUDGET - steps.reduce((sum, s) => sum + parseSpent(s.spent), 0);
+}
+
+function computeTotalLoss(steps: [StepData, StepData, StepData]): string {
+  const budget = computeCurrentBudget(steps);
+  const loss = Math.max(0, -budget);
+  return `€${loss.toLocaleString('it-IT')}`;
+}
 
 // ─── Tipi del context ────────────────────────────────────────────────────────
 
@@ -20,6 +39,7 @@ interface GameContextType {
   state: GameState | null;
   loading: boolean;
   retryCount: number;
+  currentBudget: number;
   error: string | null;
   startGame: (playerName: string) => Promise<void>;
   chooseOption: (choice: string) => Promise<void>;
@@ -49,7 +69,6 @@ async function fetchWithTimeout(
   }
 }
 
-/** Esegue fetch con retry automatico su 503 (overloaded). Aggiorna retryCount ad ogni tentativo. */
 async function fetchWithRetry(
   url: string,
   options: RequestInit,
@@ -67,7 +86,6 @@ async function fetchWithRetry(
       }
       return res;
     } catch (err) {
-      // Non ritentare su timeout o ultimo tentativo
       const isAbort = err instanceof Error && err.name === 'AbortError';
       if (isAbort || attempt >= MAX_RETRIES) throw err;
       await sleep(1500 * attempt);
@@ -94,6 +112,10 @@ async function saveSession(s: GameState): Promise<void> {
         step3Choice: s.steps[2].choice,
         step3Output: s.steps[2].output,
         conclusion: s.conclusion,
+        initialBudget: s.initialBudget,
+        spentPhase1: parseSpent(s.steps[0].spent),
+        spentPhase2: parseSpent(s.steps[1].spent),
+        spentPhase3: parseSpent(s.steps[2].spent),
         totalLoss: s.totalLoss,
         lastWords: s.lastWords,
         contactType: s.contact.type,
@@ -124,7 +146,7 @@ function pickRandomProduct(): Product {
 }
 
 function emptyStep(): StepData {
-  return { narrative: null, challenge: '', options: [], choice: null, output: null };
+  return { narrative: null, challenge: '', options: [], choice: null, output: null, spent: null, spentLabel: null };
 }
 
 function makeInitialSteps(): [StepData, StepData, StepData] {
@@ -145,6 +167,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
+
+  const currentBudget = state ? computeCurrentBudget(state.steps) : INITIAL_BUDGET;
 
   // ── startGame ──────────────────────────────────────────────────────────────
   const startGame = useCallback(async (playerName: string) => {
@@ -183,6 +207,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
         options: data.options,
         choice: null,
         output: null,
+        spent: null,
+        spentLabel: null,
       };
 
       setState({
@@ -193,6 +219,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
         currentStep: 1,
         steps,
         conclusion: null,
+        conclusionBridge: null,
+        initialBudget: INITIAL_BUDGET,
         totalLoss: null,
         lastWords: null,
         contact: { type: null, value: null, submitted: false },
@@ -249,16 +277,17 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
         const data = (await res.json()) as {
           output: string;
+          spent: string;
+          spent_label: string;
           challenge?: string;
           options?: string[];
-          total_loss?: string;
           last_words?: string;
         };
 
         setState((prev) => {
           if (!prev) return prev;
           const newSteps = [...prev.steps] as typeof prev.steps;
-          newSteps[idx] = { ...newSteps[idx], choice, output: data.output };
+          newSteps[idx] = { ...newSteps[idx], choice, output: data.output, spent: data.spent, spentLabel: data.spent_label };
 
           if (step < 3 && data.challenge && data.options) {
             newSteps[idx + 1] = {
@@ -268,29 +297,32 @@ export function GameProvider({ children }: { children: ReactNode }) {
             };
           }
 
+          // totalLoss calcolato dal frontend dopo step 3
+          const totalLoss = step === 3 ? computeTotalLoss(newSteps) : prev.totalLoss;
+
           return {
             ...prev,
             steps: newSteps,
             ...(step === 3 && {
-              totalLoss: data.total_loss ?? '€12.450',
+              totalLoss,
               lastWords: data.last_words ?? 'Ne è valsa la pena',
             }),
           };
         });
 
         const updatedSteps = [...state.steps] as typeof state.steps;
-        updatedSteps[idx] = { ...updatedSteps[idx], choice, output: data.output };
+        updatedSteps[idx] = { ...updatedSteps[idx], choice, output: data.output, spent: data.spent, spentLabel: data.spent_label };
+        const totalLoss = step === 3 ? computeTotalLoss(updatedSteps) : state.totalLoss;
         void saveSession({
           ...state,
           steps: updatedSteps,
           ...(step === 3 && {
-            totalLoss: data.total_loss ?? '€12.450',
+            totalLoss,
             lastWords: data.last_words ?? 'Ne è valsa la pena',
           }),
         });
       } catch (err) {
         console.error('[chooseOption]', err);
-        // Ripristina la scelta come non effettuata
         setState((prev) => {
           if (!prev) return prev;
           const newSteps = [...prev.steps] as typeof prev.steps;
@@ -336,9 +368,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
         if (!res.ok) throw new Error(`/api/game/conclude → ${res.status}`);
 
-        const data = (await res.json()) as { conclusion: string };
+        const data = (await res.json()) as { bancarotta: string; ponte: string };
 
-        const newState: GameState = { ...state, currentStep: 'conclusion', conclusion: data.conclusion };
+        const newState: GameState = {
+          ...state,
+          currentStep: 'conclusion',
+          conclusion: data.bancarotta,
+          conclusionBridge: data.ponte,
+        };
         setState(newState);
         void saveSession(newState);
       } catch (err) {
@@ -380,6 +417,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         state,
         loading,
         retryCount,
+        currentBudget,
         error,
         startGame,
         chooseOption,

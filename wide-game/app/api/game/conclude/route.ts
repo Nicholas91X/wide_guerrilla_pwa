@@ -19,12 +19,9 @@ Ecco la sfida di marketing completa:
 - La Campagna: scelta "${steps[1].choice}" → ${steps[1].output}
 - Il Piano B: scelta "${steps[2].choice}" → ${steps[2].output}
 
-Scrivi il testo finale del fallimento della sfida (max 8 righe).
-Deve essere epico e comico, citare personaggi e dettagli specifici della storia,
-e concludere il percorso narrativo in modo coerente con i 3 disastri precedenti.
-Termina con una riga vuota poi esattamente questo testo:
-"Non preoccuparti — le sfide del marketing le affrontiamo noi."
-Firma: WIDE Studio Digitale`;
+Scrivi la conclusione seguendo esattamente i due blocchi del sistema.
+BLOCCO 1 (bancarotta): constata il fallimento in modo asciutto, cita personaggi e dettagli specifici.
+BLOCCO 2 (il ponte): rompi il personaggio, una frase diretta che fa da ponte tra il fallimento e WIDE Studio Digitale.`;
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
@@ -33,17 +30,22 @@ Firma: WIDE Studio Digitale`;
       tools: [
         {
           name: 'game_conclude',
-          description: 'Testo finale epico di bancarotta',
+          description: 'Testo finale di bancarotta in due blocchi separati',
           input_schema: {
             type: 'object' as const,
             properties: {
-              conclusion: {
+              bancarotta: {
                 type: 'string',
                 description:
-                  'Testo finale del fallimento della sfida di marketing, max 8 righe. Riprendi personaggi e dettagli specifici della storia. Usa la tecnica iper-realistica con svolta grottesca. Termina con riga vuota e firma WIDE esatta. No emoji.',
+                  'BLOCCO 1: dichiarazione di bancarotta. Tono da referto. Cita personaggi e dettagli specifici della storia. Max 4 righe. No emoji.',
+              },
+              ponte: {
+                type: 'string',
+                description:
+                  'BLOCCO 2: il narratore rompe il personaggio. Una sola frase secca, diretta, che chiude la storia e introduce l\'idea che il marketing fatto bene esiste — senza nominare WIDE, senza essere paternalistico, senza "hai fatto del tuo meglio". Il tono è quello di qualcuno che constata un fatto ovvio. Es: "Il marketing non è un\'improvvisazione — almeno non dovrebbe esserlo.", "Da qualche parte esiste chi sa come farlo. Non eri tu, ma esiste.", "Fine della simulazione. Là fuori è diverso." OBBLIGATORIO.',
               },
             },
-            required: ['conclusion'],
+            required: ['bancarotta', 'ponte'],
           },
         },
       ],

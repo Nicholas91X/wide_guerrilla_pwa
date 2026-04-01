@@ -67,18 +67,22 @@ Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.${
                 output: {
                   type: 'string',
                   description:
-                    'Prima riga: frase titolo in MAIUSCOLO. Poi 3-4 righe con la tecnica in 3 movimenti. No emoji. Solo testo narrativo, senza [LOSS] o [LASTWORDS].',
+                    'Prima riga: frase titolo in MAIUSCOLO. Poi 3-4 righe con la tecnica in 3 movimenti. No emoji. Solo testo narrativo.',
                 },
-                total_loss: {
+                spent: {
                   type: 'string',
-                  description: 'Importo totale perso, cifra specifica tra €3.000 e €80.000. Formato: "€XX.XXX". Es: "€47.832".',
+                  description: 'Costo sostenuto in questa fase finale. Formato "€X.XXX". Range: €5.500-€8.000. Deve essere il colpo di grazia che porta il totale ben oltre il budget.',
+                },
+                spent_label: {
+                  type: 'string',
+                  description: 'Voce di spesa concreta e specifica, max 5 parole. Es: "Restituzione merce invenduta", "Penale contratto rescisso". Deve corrispondere al disastro finale.',
                 },
                 last_words: {
                   type: 'string',
                   description: 'Ultime parole del giocatore: frase breve, asciutta, leggermente inconsapevole. Es: "Ma su TikTok funzionava", "Il cognato aveva detto di sì".',
                 },
               },
-              required: ['output', 'total_loss', 'last_words'],
+              required: ['output', 'spent', 'spent_label', 'last_words'],
             },
           },
         ],
@@ -118,8 +122,16 @@ Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.${
                   items: { type: 'string' },
                   description: 'Per la Sfida 2 (La Campagna): esattamente 3 opzioni. Per la Sfida 3 (Il Piano B): esattamente 4 opzioni, la quarta è sempre l\'opzione estero (bonus). Max 20 parole ciascuna. Senza numero iniziale.',
                 },
+                spent: {
+                  type: 'string',
+                  description: 'Costo sostenuto in questa fase. Formato "€X.XXX". Fase 1: €2.000-€4.000. Fase 2: €3.500-€5.500.',
+                },
+                spent_label: {
+                  type: 'string',
+                  description: 'Voce di spesa concreta e specifica, max 5 parole. Es: "Stampa 3.000 volantini", "Spot su Radio Deejay", "Affitto stand fieristico". Deve corrispondere a ciò che è successo nel testo.',
+                },
               },
-              required: ['output', 'challenge', 'options'],
+              required: ['output', 'challenge', 'options', 'spent', 'spent_label'],
             },
           },
         ],

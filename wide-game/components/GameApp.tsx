@@ -8,6 +8,7 @@ import IntroScreen from './screens/IntroScreen';
 import ChallengeScreen from './screens/ChallengeScreen';
 import ConclusionScreen from './screens/ConclusionScreen';
 import ContactScreen from './screens/ContactScreen';
+import BudgetBar from './ui/BudgetBar';
 
 function GameContent() {
   const { state } = useGame();
@@ -29,8 +30,12 @@ function GameContent() {
   else if (state.currentStep === 'contact') screen = <ContactScreen />;
   else screen = null;
 
+  const showBudget = state && typeof state.currentStep === 'number';
+
   return (
-    <AnimatePresence mode="wait">
+    <>
+      {showBudget && <BudgetBar />}
+      <AnimatePresence mode="wait">
       <motion.div
         key={key}
         initial={{ opacity: 0, y: 20 }}
@@ -49,7 +54,8 @@ function GameContent() {
         </footer>
         )}
       </motion.div>
-    </AnimatePresence>
+      </AnimatePresence>
+    </>
   );
 }
 
