@@ -70,12 +70,21 @@ export default function ConclusionScreen() {
         )}
       </div>
 
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={done ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' as const, delay: 0.9 }}
+        className="text-foreground-muted/40 text-xs font-body text-center mt-6"
+      >
+        Storia diversa ogni volta. Generata dall&apos;AI. Rovinata da te.
+      </motion.p>
+
       <motion.button
         onClick={proceedToContact}
         initial={{ opacity: 0, y: 10 }}
         animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-        transition={{ duration: 0.4, ease: 'easeOut' as const, delay: 0.6 }}
-        className="w-full mt-6 bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all"
+        transition={{ duration: 0.4, ease: 'easeOut' as const, delay: 1.1 }}
+        className="w-full mt-4 bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all"
       >
         Ricevi la tua storia
       </motion.button>

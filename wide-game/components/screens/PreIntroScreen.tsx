@@ -17,8 +17,13 @@ export default function PreIntroScreen({ onReady }: Props) {
           <br />Hai tre mosse.
         </p>
 
-        <p className="text-foreground-muted text-base font-body leading-relaxed mb-10">
+        <p className="text-foreground-muted text-base font-body leading-relaxed mb-8">
           Il mercato italiano ti aspetta.
+        </p>
+
+        <p className="text-foreground-muted/50 text-xs font-body leading-relaxed mb-6">
+          Prodotto, storia e conseguenze sono generati dall'AI a ogni partita.
+          <br />Nessun percorso è uguale. Dipende solo da te.
         </p>
 
         <p className="text-foreground-muted/60 text-base font-body italic">
