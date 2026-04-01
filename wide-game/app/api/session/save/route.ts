@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase';
 
 interface SaveSessionBody {
   sessionId: string;
+  playerName?: string | null;
   productName: string;
   step1Choice?: string | null;
   step1Output?: string | null;
@@ -11,6 +12,8 @@ interface SaveSessionBody {
   step3Choice?: string | null;
   step3Output?: string | null;
   conclusion?: string | null;
+  totalLoss?: string | null;
+  lastWords?: string | null;
   contactType?: string | null;
   contactValue?: string | null;
   completed?: boolean;
@@ -30,6 +33,7 @@ export async function POST(request: NextRequest) {
     const { error } = await supabase.from('sessions').upsert(
       {
         id: body.sessionId,
+        player_name: body.playerName ?? null,
         product_name: body.productName,
         step_1_choice: body.step1Choice ?? null,
         step_1_output: body.step1Output ?? null,
@@ -38,6 +42,8 @@ export async function POST(request: NextRequest) {
         step_3_choice: body.step3Choice ?? null,
         step_3_output: body.step3Output ?? null,
         conclusion: body.conclusion ?? null,
+        total_loss: body.totalLoss ?? null,
+        last_words: body.lastWords ?? null,
         contact_type: body.contactType ?? null,
         contact_value: body.contactValue ?? null,
         completed: body.completed ?? false,

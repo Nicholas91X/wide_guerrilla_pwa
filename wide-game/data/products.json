@@ -1,29 +1,29 @@
 {
   "products": [
-    { "id": 1, "name": "Patch dimagranti a frequenze 5G", "price": "€89", "category": "bellezza" },
-    { "id": 2, "name": "Crema termogenica che converte l'ansia in calorie", "price": "€64", "category": "bellezza" },
-    { "id": 3, "name": "Siero viso al veleno di medusa microdosato", "price": "€56", "category": "bellezza" },
+    { "id": 1, "name": "Patch dimagranti a frequenze 5G", "price": "€89", "category": "bellezza", "image": "/products/product-1.png" },
+    { "id": 2, "name": "Crema termogenica che converte l'ansia in calorie", "price": "€64", "category": "bellezza", "image": "/products/product-2.png" },
+    { "id": 3, "name": "Siero viso al veleno di medusa microdosato", "price": "€56", "category": "bellezza", "image": "/products/product-3.png" },
 
-    { "id": 4, "name": "Braccialetto in grafene che misura la produttività", "price": "€129", "category": "tech" },
-    { "id": 5, "name": "Caricatore solare per smartphone da balcone", "price": "€199", "category": "tech" },
-    { "id": 6, "name": "Auricolare con AI che corregge la postura", "price": "€249", "category": "tech" },
+    { "id": 4, "name": "Braccialetto in grafene che misura la produttività", "price": "€129", "category": "tech", "image": "/products/product-4.png" },
+    { "id": 5, "name": "Caricatore solare per smartphone da balcone", "price": "€199", "category": "tech", "image": "/products/product-5.png" },
+    { "id": 6, "name": "Auricolare con AI che corregge la postura", "price": "€249", "category": "tech", "image": "/products/product-6.png" },
 
-    { "id": 7, "name": "Olio EVO con infusione di CBD", "price": "€38", "category": "food" },
-    { "id": 8, "name": "Grissini proteici al carbone attivo", "price": "€12", "category": "food" },
-    { "id": 9, "name": "Crackers di grillo tostato 'linea proteica", "price": "€7", "category": "food" },
+    { "id": 7, "name": "Olio EVO con infusione di CBD", "price": "€38", "category": "food", "image": "/products/product-7.png" },
+    { "id": 8, "name": "Grissini proteici al carbone attivo", "price": "€12", "category": "food", "image": "/products/product-8.png" },
+    { "id": 9, "name": "Crackers di grillo tostato 'linea proteica", "price": "€7", "category": "food", "image": "/products/product-9.png" },
 
-    { "id": 10, "name": "Corso online di leadership basato sull'ippoterapia", "price": "€490", "category": "formazione" },
-    { "id": 11, "name": "Masterclass di negoziazione con metodo arti marziali", "price": "€350", "category": "formazione" },
-    { "id": 12, "name": "Consulenza astrologica per decisioni aziendali", "price": "€180/mese", "category": "formazione" },
+    { "id": 10, "name": "Corso online di leadership basato sull'ippoterapia", "price": "€490", "category": "formazione", "image": "/products/product-10.png" },
+    { "id": 11, "name": "Masterclass di negoziazione con metodo arti marziali", "price": "€350", "category": "formazione", "image": "/products/product-11.png" },
+    { "id": 12, "name": "Consulenza astrologica per decisioni aziendali", "price": "€180/mese", "category": "formazione", "image": "/products/product-12.png" },
 
-    { "id": 13, "name": "Acqua alcalina in bottiglia di vetro con certificato energetico", "price": "€14", "category": "lifestyle" },
-    { "id": 14, "name": "Candela profumata 'Mattina Produttiva'", "price": "€42", "category": "lifestyle" },
-    { "id": 15, "name": "Calzini in bambù con aforismi motivazionali", "price": "€19/mese", "category": "lifestyle" },
-    { "id": 16, "name": "Cuscino ergonomico per riunioni oltre i 45 minuti", "price": "€89", "category": "lifestyle" },
+    { "id": 13, "name": "Acqua alcalina in bottiglia di vetro con certificato energetico", "price": "€14", "category": "lifestyle", "image": "/products/product-13.png" },
+    { "id": 14, "name": "Candela profumata 'Mattina Produttiva'", "price": "€42", "category": "lifestyle", "image": "/products/product-14.png" },
+    { "id": 15, "name": "Calzini in bambù con aforismi motivazionali", "price": "€19/mese", "category": "lifestyle", "image": "/products/product-15.png" },
+    { "id": 16, "name": "Cuscino ergonomico per riunioni oltre i 45 minuti", "price": "€89", "category": "lifestyle", "image": "/products/product-16.png" },
 
-    { "id": 17, "name": "Software gestionale con intelligenza artificiale emotiva", "price": "€99/mese", "category": "B2B" },
-    { "id": 18, "name": "Distributore automatico di snack salutari per uffici", "price": "€2.400", "category": "B2B" },
-    { "id": 19, "name": "Servizio di team building basato sulla panificazione", "price": "€1.200/giornata", "category": "B2B" },
-    { "id": 20, "name": "Deodorante per ambienti con feromoni di produttività", "price": "€34", "category": "B2B" }
+    { "id": 17, "name": "Software gestionale con intelligenza artificiale emotiva", "price": "€99/mese", "category": "B2B", "image": "/products/product-17.png" },
+    { "id": 18, "name": "Distributore automatico di snack salutari per uffici", "price": "€2.400", "category": "B2B", "image": "/products/product-18.png" },
+    { "id": 19, "name": "Servizio di team building basato sulla panificazione", "price": "€1.200/giornata", "category": "B2B", "image": "/products/product-19.png" },
+    { "id": 20, "name": "Deodorante per ambienti con feromoni di produttività", "price": "€34", "category": "B2B", "image": "/products/product-20.png" }
   ]
 }

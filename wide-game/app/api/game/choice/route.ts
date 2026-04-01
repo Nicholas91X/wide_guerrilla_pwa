@@ -52,7 +52,7 @@ Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.${
     }
 
     if (isLastStep) {
-      // Step 3: solo output narrativo, nessuna sfida successiva
+      // Step 3: output narrativo + total_loss + last_words
       const response = await anthropic.messages.create({
         model: 'claude-sonnet-4-6',
         max_tokens: 1024,
@@ -60,17 +60,25 @@ Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.${
         tools: [
           {
             name: 'game_choice_final',
-            description: "Risposta per l'ultima sfida, senza sfida successiva",
+            description: "Risposta per l'ultima sfida, con perdita totale e ultime parole",
             input_schema: {
               type: 'object' as const,
               properties: {
                 output: {
                   type: 'string',
                   description:
-                    'Prima riga: frase titolo in MAIUSCOLO (es. "MOSSA AUDACE."). Poi 3-4 righe con la tecnica in 3 movimenti: (1) esecuzione iper-realistica con nomi propri italiani e cifre reali, (2) svolta assurda con logica interna, (3) conseguenza laterale grottesca. No emoji.',
+                    'Prima riga: frase titolo in MAIUSCOLO. Poi 3-4 righe con la tecnica in 3 movimenti. No emoji. Solo testo narrativo, senza [LOSS] o [LASTWORDS].',
+                },
+                total_loss: {
+                  type: 'string',
+                  description: 'Importo totale perso, cifra specifica tra €3.000 e €80.000. Formato: "€XX.XXX". Es: "€47.832".',
+                },
+                last_words: {
+                  type: 'string',
+                  description: 'Ultime parole del giocatore: frase breve, asciutta, leggermente inconsapevole. Es: "Ma su TikTok funzionava", "Il cognato aveva detto di sì".',
                 },
               },
-              required: ['output'],
+              required: ['output', 'total_loss', 'last_words'],
             },
           },
         ],
@@ -127,6 +135,12 @@ Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.${
     }
   } catch (err) {
     console.error('[/api/game/choice]', err);
+    const isOverloaded =
+      typeof err === 'object' && err !== null &&
+      'status' in err && (err as { status: number }).status === 529;
+    if (isOverloaded) {
+      return NextResponse.json({ error: 'overloaded' }, { status: 503 });
+    }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

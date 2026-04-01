@@ -43,7 +43,7 @@ interface Props {
 }
 
 export default function ChallengeScreen({ step }: Props) {
-  const { state, loading, chooseOption, continueToNext } = useGame();
+  const { state, loading, retryCount, error, chooseOption, continueToNext } = useGame();
   if (!state) return null;
 
   const stepData = state.steps[step - 1];
@@ -112,6 +112,14 @@ export default function ChallengeScreen({ step }: Props) {
                   'Continua'
                 )}
               </button>
+              {loading && retryCount > 1 && (
+                <p className="text-foreground-muted/60 text-xs font-body text-center mt-3">
+                  Nuovo tentativo... ({retryCount} di 4)
+                </p>
+              )}
+              {error && (
+                <p className="text-red-400 text-xs font-body text-center mt-3">{error}</p>
+              )}
             </>
           ) : (
             <LoadingState />
@@ -159,6 +167,14 @@ export default function ChallengeScreen({ step }: Props) {
               );
             })}
           </motion.div>
+          {loading && retryCount > 1 && (
+            <p className="text-foreground-muted/60 text-xs font-body text-center mt-4">
+              Nuovo tentativo... ({retryCount} di 4)
+            </p>
+          )}
+          {error && !loading && (
+            <p className="text-red-400 text-xs font-body text-center mt-4">{error}</p>
+          )}
         </div>
       )}
 

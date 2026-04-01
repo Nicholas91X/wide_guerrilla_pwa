@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
+import BankruptcyCertificate from '@/components/ui/BankruptcyCertificate';
 import { VIDEO_POOLS } from '@/lib/videoPools';
 
 const revealTransition = (delay: number) =>
@@ -31,7 +32,7 @@ export default function ContactScreen() {
   // ── Schermata finale post-submit ───────────────────────────────────────────
   if (state.contact.submitted) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+      <div className="min-h-screen flex flex-col items-center px-6 py-12 text-center">
 
         <motion.div
           className="w-full max-w-xs mx-auto mb-8"
@@ -67,14 +68,29 @@ export default function ContactScreen() {
           Il marketing serio lo facciamo noi.
         </motion.p>
 
+        {/* Certificato di bancarotta */}
+        <motion.div
+          className="w-full"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={revealTransition(0.75)}
+        >
+          <BankruptcyCertificate
+            playerName={state.playerName}
+            productName={state.product.name}
+            totalLoss={state.totalLoss ?? '€12.450'}
+            lastWords={state.lastWords ?? 'Ne è valsa la pena'}
+          />
+        </motion.div>
+
         <motion.a
           href="https://widestudiodigitale.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full max-w-xs bg-gold text-background font-body font-semibold py-4 rounded-full text-base text-center block hover:bg-gold-light active:scale-95 transition-all"
+          className="mt-6 w-full max-w-xs bg-gold text-background font-body font-semibold py-4 rounded-full text-base text-center block hover:bg-gold-light active:scale-95 transition-all"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={revealTransition(0.75)}
+          transition={revealTransition(1.0)}
         >
           Scopri WIDE
         </motion.a>
