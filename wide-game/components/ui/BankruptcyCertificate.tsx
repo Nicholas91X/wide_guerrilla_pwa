@@ -126,9 +126,21 @@ export default function BankruptcyCertificate({
       <button
         onClick={handleShare}
         disabled={sharing}
-        className="mt-5 w-full border border-gold/50 text-gold font-body text-sm font-semibold py-3 rounded-full hover:bg-gold/10 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+        className="mt-5 w-full flex items-center justify-center gap-2 border border-gold/50 text-gold font-body text-sm font-semibold py-3 rounded-full hover:bg-gold/10 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
       >
-        {sharing ? 'Generando...' : 'Condividi il certificato'}
+        {sharing ? (
+          'Generando...'
+        ) : (
+          <>
+            {/* Share icon */}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+            Condividi il certificato
+          </>
+        )}
       </button>
     </div>
   );

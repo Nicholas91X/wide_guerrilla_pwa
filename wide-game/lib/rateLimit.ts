@@ -11,7 +11,7 @@ export async function checkRateLimit(
   try {
     const { data, error } = await supabase
       .from('rate_limits')
-      .select('id, count, reset_at')
+      .select('ip, count, reset_at')
       .eq('ip', ip)
       .maybeSingle();
 
@@ -43,7 +43,7 @@ export async function checkRateLimit(
           count: 1,
           reset_at: new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString(),
         })
-        .eq('id', data.id);
+        .eq('ip', data.ip);
       if (updateError) console.error('[rateLimit] reset error:', updateError);
       return { allowed: true };
     }
@@ -60,7 +60,7 @@ export async function checkRateLimit(
     const { error: incError } = await supabase
       .from('rate_limits')
       .update({ count: data.count + 1 })
-      .eq('id', data.id);
+      .eq('ip', data.ip);
     if (incError) console.error('[rateLimit] increment error:', incError);
 
     return { allowed: true };
