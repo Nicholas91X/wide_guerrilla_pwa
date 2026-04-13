@@ -16,7 +16,6 @@ function isValidValue(value: string, type: 'email' | 'whatsapp'): boolean {
   if (type === 'email') {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
   }
-  // WhatsApp: rimuove tutto tranne le cifre, accetta 9-15 digit
   const digits = v.replace(/\D/g, '');
   return digits.length >= 9 && digits.length <= 15;
 }
@@ -29,13 +28,13 @@ export default function ContactScreen() {
 
   if (!state) return null;
 
-  // ── Schermata finale post-submit ───────────────────────────────────────────
+  // ── Schermata finale post-submit ─────────────────────────────────────────
   if (state.contact.submitted) {
     return (
-      <div className="min-h-screen flex flex-col items-center px-6 py-12 text-center">
+      <div className="min-h-screen flex flex-col items-center px-5 py-12 text-center">
 
         <motion.div
-          className="w-full max-w-xs mx-auto mb-8"
+          className="w-full max-w-xs mx-auto mb-6"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={revealTransition(0)}
@@ -44,31 +43,31 @@ export default function ContactScreen() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={revealTransition(0.3)}
-          className="mb-2"
+          className="mb-1"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.png"
             alt="WIDE Studio Digitale"
-            width={80}
-            height={80}
-            className="mx-auto rounded-full"
+            width={64}
+            height={64}
+            className="mx-auto rounded-full opacity-90"
           />
         </motion.div>
 
         <motion.p
-          className="text-foreground-muted text-sm font-body leading-relaxed mb-10"
-          initial={{ opacity: 0, y: 16 }}
+          className="text-foreground-muted text-xs font-body leading-relaxed mb-8"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={revealTransition(0.5)}
         >
           Il marketing serio lo facciamo noi.
         </motion.p>
 
-        {/* Certificato di bancarotta */}
+        {/* Certificato */}
         <motion.div
           className="w-full"
           initial={{ opacity: 0, y: 16 }}
@@ -87,8 +86,8 @@ export default function ContactScreen() {
           href="https://widestudiodigitale.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 w-full max-w-xs bg-gold text-background font-body font-semibold py-4 rounded-full text-base text-center block hover:bg-gold-light active:scale-95 transition-all"
-          initial={{ opacity: 0, y: 16 }}
+          className="mt-6 w-full max-w-xs bg-gold text-background font-body font-semibold py-4 rounded-full text-sm tracking-wide text-center block hover:bg-gold-light active:scale-[0.98] transition-all duration-200"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={revealTransition(1.0)}
         >
@@ -99,7 +98,7 @@ export default function ContactScreen() {
     );
   }
 
-  // ── Form contatto ──────────────────────────────────────────────────────────
+  // ── Form contatto ────────────────────────────────────────────────────────
   const valid = isValidValue(value, contactType);
   const canSubmit = gdpr && valid;
 
@@ -109,25 +108,30 @@ export default function ContactScreen() {
   };
 
   return (
-    /* overflow-y-auto permette lo scroll quando la tastiera virtuale è aperta */
-    <div className="min-h-screen flex flex-col px-6 py-8 overflow-y-auto">
+    <div className="min-h-screen flex flex-col px-5 py-8 overflow-y-auto">
 
-      <h2 className="font-display text-2xl text-foreground leading-snug mb-2">
-        Vuoi ricevere la tua storia di bancarotta?
-      </h2>
-      <p className="text-foreground-muted text-sm font-body mb-8 leading-relaxed">
-        Te la mandiamo subito. Nessun altro messaggio.
-      </p>
+      {/* Header */}
+      <div className="mb-7">
+        <p className="text-gold/60 text-[0.55rem] font-body tracking-[0.3em] uppercase mb-1">
+          Quasi finita
+        </p>
+        <h2 className="font-display text-[1.9rem] text-foreground font-semibold leading-tight italic">
+          Vuoi ricevere la tua storia?
+        </h2>
+        <p className="text-foreground-muted text-xs font-body mt-2 leading-relaxed">
+          Te la mandiamo subito. Nessun altro messaggio.
+        </p>
+      </div>
 
-      {/* Toggle email / WhatsApp — min 44px tap target */}
-      <div className="flex rounded-full border border-gold/45 p-1 mb-6">
+      {/* Toggle email / WhatsApp */}
+      <div className="flex bg-surface rounded-full p-1 mb-5 border border-gold/20">
         {(['email', 'whatsapp'] as const).map((type) => (
           <button
             key={type}
             onClick={() => { setContactType(type); setValue(''); }}
-            className={`flex-1 min-h-[44px] rounded-full text-sm font-body transition-colors ${
+            className={`flex-1 min-h-[44px] rounded-full text-xs font-body font-medium transition-all duration-200 ${
               contactType === type
-                ? 'bg-gold text-background font-semibold'
+                ? 'bg-gold text-background shadow-sm'
                 : 'text-foreground-muted hover:text-foreground'
             }`}
           >
@@ -143,53 +147,50 @@ export default function ContactScreen() {
         autoComplete={contactType === 'email' ? 'email' : 'tel'}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder={
-          contactType === 'email' ? 'la@tuaemail.com' : '+39 333 000 0000'
-        }
-        className="w-full bg-transparent border border-gold/45 text-foreground font-body px-4 py-3 rounded-xl mb-4 focus:outline-none focus:border-gold placeholder:text-foreground-muted/50 transition-colors"
+        placeholder={contactType === 'email' ? 'la@tuaemail.com' : '+39 333 000 0000'}
+        className="w-full bg-surface border border-gold/25 text-foreground font-body px-4 py-3.5 rounded-2xl mb-2 focus:outline-none focus:border-gold/60 focus:bg-surface-elevated placeholder:text-foreground-dim transition-all duration-200 text-sm"
       />
 
-      {/* Testo esplicativo — cambia con fade al toggle */}
+      {/* Testo esplicativo */}
       <AnimatePresence mode="wait">
         <motion.p
           key={contactType}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="text-foreground/50 text-xs font-body text-center mb-4 -mt-2 px-1"
+          transition={{ duration: 0.18 }}
+          className="text-foreground-dim text-[0.6rem] font-body text-center mb-3 px-1 tracking-wide"
         >
           {contactType === 'email'
-            ? 'Riceverai la tua storia di bancarotta via email in pochi secondi.'
+            ? 'Riceverai la storia di bancarotta via email in pochi secondi.'
             : 'Salveremo il tuo numero e ti contatteremo su WhatsApp entro 24 ore.'}
         </motion.p>
       </AnimatePresence>
 
-      {/* Feedback validazione (solo se c'è testo) */}
+      {/* Validazione */}
       {value.trim().length > 0 && !valid && (
-        <p className="text-gold/70 text-xs font-body mb-4 -mt-2 px-1">
+        <p className="text-gold/60 text-[0.6rem] font-body mb-3 px-1 text-center">
           {contactType === 'email'
             ? 'Formato email non valido.'
             : 'Inserisci un numero valido (min 9 cifre).'}
         </p>
       )}
 
-      {/* GDPR checkbox */}
-      <label className="flex items-start gap-3 mb-8 cursor-pointer">
-        {/* L'area cliccabile include sia la checkbox che il testo */}
+      {/* GDPR */}
+      <label className="flex items-start gap-3 mb-7 cursor-pointer">
         <input
           type="checkbox"
           checked={gdpr}
           onChange={(e) => setGdpr(e.target.checked)}
           className="mt-0.5 accent-gold w-5 h-5 shrink-0 cursor-pointer"
         />
-        <span className="text-foreground-muted text-xs font-body leading-relaxed">
+        <span className="text-foreground-muted text-[0.6rem] font-body leading-relaxed">
           Ho letto e accetto la{' '}
           <a
             href="https://widestudiodigitale.com/privacy"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gold underline"
+            className="text-gold underline underline-offset-2"
             onClick={(e) => e.stopPropagation()}
           >
             Privacy Policy
@@ -198,19 +199,19 @@ export default function ContactScreen() {
         </span>
       </label>
 
-      {/* CTA — 56px height per tap target sicuro */}
+      {/* CTA */}
       <button
         onClick={handleSubmit}
         disabled={!canSubmit}
-        className="w-full min-h-[56px] bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+        className="w-full min-h-[56px] bg-gold text-background font-body font-semibold py-4 rounded-full text-sm tracking-wide hover:bg-gold-light active:scale-[0.98] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100"
       >
         Mandamela
       </button>
 
-      {/* Skip — min 44px tap target */}
+      {/* Skip */}
       <button
         onClick={skipContact}
-        className="w-full min-h-[44px] mt-2 text-foreground-muted text-sm font-body hover:text-foreground transition-colors"
+        className="w-full min-h-[44px] mt-2 text-foreground-dim text-xs font-body hover:text-foreground-muted transition-colors duration-200"
       >
         No grazie
       </button>

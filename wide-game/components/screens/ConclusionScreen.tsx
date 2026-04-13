@@ -16,16 +16,22 @@ export default function ConclusionScreen() {
   if (!state || !state.conclusion) return null;
 
   return (
-    <div className="min-h-screen flex flex-col px-6 py-8">
+    <div className="min-h-screen flex flex-col px-5 py-8">
 
-      <p className="text-gold text-xs font-body tracking-widest uppercase mb-6">
-        Fine della storia
-      </p>
+      {/* Header */}
+      <div className="mb-6">
+        <p className="text-gold/60 text-[0.55rem] font-body tracking-[0.3em] uppercase mb-1">
+          Capitolo finale
+        </p>
+        <h2 className="font-display text-[1.9rem] text-foreground font-semibold leading-tight italic">
+          Fine della storia
+        </h2>
+      </div>
 
       <GifSlot pool={VIDEO_POOLS.conclusion} className="mb-6" />
 
       <div className="flex-1">
-        {/* BLOCCO 1 — Bancarotta */}
+        {/* Conclusione narrata */}
         <TypewriterBlock
           text={state.conclusion}
           speed={13}
@@ -33,29 +39,30 @@ export default function ConclusionScreen() {
           onDone={handleDone}
         />
 
-        {/* BLOCCO 2 — Il Ponte (testo asciutto, nessun riferimento WIDE) */}
+        {/* Bridge */}
         {state.conclusionBridge && (
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{ duration: 0.6, ease: 'easeOut' as const, delay: 0.2 }}
-            className="mt-6 text-foreground-muted text-sm font-body leading-relaxed italic"
+            className="mt-5 text-foreground-muted text-xs font-body leading-relaxed italic"
           >
             {state.conclusionBridge}
           </motion.p>
         )}
 
-        {/* Card WIDE — hardcodata, appare dopo il bridge */}
+        {/* Card WIDE */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-          transition={{ duration: 0.7, ease: 'easeOut' as const, delay: 0.55 }}
-          className="mt-4 bg-gold/20 border border-gold/50 rounded-2xl px-5 py-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={{ duration: 0.6, ease: 'easeOut' as const, delay: 0.55 }}
+          className="mt-5 bg-surface border border-gold/30 rounded-2xl px-5 py-4"
         >
-          <p className="text-foreground font-body text-sm leading-relaxed">
+          <span className="gold-rule mb-3" />
+          <p className="text-foreground/80 font-body text-xs leading-relaxed">
             Non ti preoccupare — alle sfide del marketing ci pensiamo noi.
           </p>
-          <p className="text-gold font-display text-base mt-2">
+          <p className="text-gold font-display text-sm italic mt-2">
             WIDE Studio Digitale
           </p>
         </motion.div>
@@ -65,17 +72,17 @@ export default function ConclusionScreen() {
         initial={{ opacity: 0 }}
         animate={done ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' as const, delay: 0.9 }}
-        className="text-foreground-muted/40 text-xs font-body text-center mt-6"
+        className="text-foreground-dim text-[0.55rem] font-body text-center mt-5 tracking-widest uppercase"
       >
-        Storia diversa ogni volta. Generata dall&apos;AI. Rovinata da te.
+        Storia diversa ogni volta · Generata dall&apos;AI · Rovinata da te
       </motion.p>
 
       <motion.button
         onClick={proceedToContact}
-        initial={{ opacity: 0, y: 10 }}
-        animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 8 }}
+        animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
         transition={{ duration: 0.4, ease: 'easeOut' as const, delay: 1.1 }}
-        className="w-full mt-4 bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all"
+        className="w-full mt-4 bg-gold text-background font-body font-semibold py-4 rounded-full text-sm tracking-wide hover:bg-gold-light active:scale-[0.98] transition-all duration-200"
       >
         Ricevi la tua storia
       </motion.button>

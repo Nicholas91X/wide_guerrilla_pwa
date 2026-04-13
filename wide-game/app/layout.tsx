@@ -1,16 +1,18 @@
 import type { Metadata, Viewport } from 'next';
-import { Playfair_Display, Outfit } from 'next/font/google';
+import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 
-const playfairDisplay = Playfair_Display({
-  variable: '--font-playfair-display',
+const cormorant = Cormorant_Garamond({
+  variable: '--font-cormorant',
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   display: 'swap',
 });
 
-const outfit = Outfit({
-  variable: '--font-outfit',
+const dmSans = DM_Sans({
+  variable: '--font-dm-sans',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -67,7 +69,7 @@ export default function RootLayout({
   return (
     <html
       lang="it"
-      className={`${playfairDisplay.variable} ${outfit.variable}`}
+      className={`${cormorant.variable} ${dmSans.variable}`}
     >
       <body className="bg-background text-foreground font-body antialiased min-h-screen">
         {children}

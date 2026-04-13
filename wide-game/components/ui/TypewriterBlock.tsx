@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 interface Props {
   text: string;
   speed?: number;
-  /** Se true, la prima frase viene resa in oro e grassetto (frase titolo in CAPS) */
+  /** Se true, la prima frase viene resa in oro e corsivo (titolo) */
   hasTitle?: boolean;
   onDone?: () => void;
 }
@@ -27,8 +27,6 @@ function splitIntoSentences(text: string): string[] {
 export default function TypewriterBlock({ text, speed = 14, hasTitle = false, onDone }: Props) {
   const [displayed, setDisplayed] = useState('');
 
-  // Ref stabile per onDone: evita che una nuova arrow function inline
-  // causi il re-run dell'effect (e il reset del typewriter).
   const onDoneRef = useRef(onDone);
   useEffect(() => {
     onDoneRef.current = onDone;
@@ -49,7 +47,7 @@ export default function TypewriterBlock({ text, speed = 14, hasTitle = false, on
     }, speed);
 
     return () => clearInterval(id);
-  }, [text, speed]); // onDone intenzionalmente escluso — gestito via ref
+  }, [text, speed]);
 
   const sentences = splitIntoSentences(displayed);
   const isTyping = displayed.length < text.length;
@@ -63,15 +61,15 @@ export default function TypewriterBlock({ text, speed = 14, hasTitle = false, on
           <p
             key={i}
             className={[
-              'font-body text-base leading-relaxed mb-3',
+              'font-body leading-relaxed mb-3',
               hasTitle && i === 0
-                ? 'text-gold font-semibold tracking-wide'
-                : 'text-foreground',
+                ? 'font-display text-gold italic text-base font-semibold tracking-wide'
+                : 'text-foreground/90 text-sm',
             ].join(' ')}
           >
             {sentence}
             {isLast && isTyping && (
-              <span className="inline-block w-0.5 h-[1em] bg-gold align-middle ml-0.5 animate-pulse" />
+              <span className="inline-block w-px h-[0.85em] bg-gold align-middle ml-0.5 animate-pulse" />
             )}
           </p>
         );

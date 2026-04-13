@@ -22,7 +22,6 @@ function splitPitch(text: string): string[] {
     .map((p, i) => {
       const t = p.trim();
       if (!t) return null;
-      // Riaggiunge il punto rimosso dallo split, solo se non già presente
       return i < parts.length - 1 && !/[.!?]$/.test(t) ? t + '.' : t;
     })
     .filter(Boolean) as string[];
@@ -30,16 +29,53 @@ function splitPitch(text: string): string[] {
 
 const optionContainer = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+  show: { transition: { staggerChildren: 0.07, delayChildren: 0.03 } },
 };
 
 const optionItem = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: 'easeOut' as const } },
+  hidden: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' as const } },
 };
 
 interface Props {
   step: 1 | 2 | 3;
+}
+
+// Indicatore step visuale
+function StepIndicator({ current }: { current: 1 | 2 | 3 }) {
+  return (
+    <div className="flex items-center gap-0 justify-center mb-6">
+      {([1, 2, 3] as const).map((s, i) => (
+        <div key={s} className="flex items-center">
+          <div className="flex flex-col items-center gap-1">
+            <div
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${
+                s < current
+                  ? 'bg-gold/50'
+                  : s === current
+                  ? 'bg-gold scale-125'
+                  : 'bg-foreground-dim'
+              }`}
+            />
+            <span
+              className={`text-[0.5rem] font-body tracking-widest uppercase transition-colors duration-300 ${
+                s === current ? 'text-gold' : 'text-foreground-dim'
+              }`}
+            >
+              {STEP_TITLES[s].split(' ')[1] ?? STEP_TITLES[s]}
+            </span>
+          </div>
+          {i < 2 && (
+            <div
+              className={`w-8 h-px mb-4 mx-1 transition-all duration-500 ${
+                s < current ? 'bg-gold/40' : 'bg-foreground-dim/40'
+              }`}
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default function ChallengeScreen({ step }: Props) {
@@ -51,33 +87,24 @@ export default function ChallengeScreen({ step }: Props) {
   const hasOutput = stepData.output !== null;
 
   return (
-    <div className="min-h-screen flex flex-col px-6 py-8">
+    <div className="min-h-screen flex flex-col px-5 py-6">
 
-      {/* Step indicator */}
-      <div className="flex items-center justify-between mb-5">
-        <p className="text-gold text-xs font-body tracking-widest uppercase">
-          Sfida {step} di 3
-        </p>
-        <p className="text-foreground-muted text-xs font-body">
-          {STEP_TITLES[step]}
-        </p>
-      </div>
+      {/* Step indicator visuale */}
+      <StepIndicator current={step} />
 
       {/* Banner prodotto (solo step 1) */}
       {step === 1 && (
-        <div className="bg-gold/15 border border-gold/40 rounded-xl overflow-hidden mb-4">
-          {/* Immagine prodotto */}
+        <div className="bg-surface border border-gold/25 rounded-2xl overflow-hidden mb-5">
           <ProductImage productId={state.product.id} />
-          {/* Testo */}
-          <div className="px-4 py-3">
-            <p className="text-foreground-muted text-xs font-body uppercase tracking-wide mb-1">
+          <div className="px-4 py-3.5">
+            <p className="text-gold/60 text-[0.55rem] font-body uppercase tracking-[0.2em] mb-1.5">
               Brief di marketing
             </p>
             <p className="text-foreground text-sm font-body font-semibold leading-snug mb-2">
               {state.product.name}
             </p>
             {state.pitch && splitPitch(state.pitch).map((line, i) => (
-              <p key={i} className="text-foreground-muted text-xs font-body leading-snug mt-2">
+              <p key={i} className="text-foreground-muted text-xs font-body leading-relaxed mt-1.5">
                 {line}
               </p>
             ))}
@@ -85,8 +112,8 @@ export default function ChallengeScreen({ step }: Props) {
         </div>
       )}
 
-      {/* Video — random dal pool della sfida corrente */}
-      <GifSlot pool={VIDEO_POOLS[`challenge-${step}`]} className="mb-6" />
+      {/* Video */}
+      <GifSlot pool={VIDEO_POOLS[`challenge-${step}`]} className="mb-5" />
 
       {hasChosen ? (
         /* ── Output mode ── */
@@ -95,31 +122,33 @@ export default function ChallengeScreen({ step }: Props) {
             <>
               <TypewriterBlock
                 text={stepData.output!}
-                speed={14}
+                speed={13}
                 hasTitle
               />
-              <button
-                onClick={continueToNext}
-                disabled={loading}
-                className="w-full mt-8 bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
-              >
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <CyclingIcon />
-                    Un momento...
-                  </span>
-                ) : (
-                  'Continua'
+              <div className="mt-8">
+                {error && (
+                  <p className="text-red-400/80 text-xs font-body text-center mb-3">{error}</p>
                 )}
-              </button>
-              {loading && retryCount > 1 && (
-                <p className="text-foreground-muted/60 text-xs font-body text-center mt-3">
-                  Nuovo tentativo... ({retryCount} di 4)
-                </p>
-              )}
-              {error && (
-                <p className="text-red-400 text-xs font-body text-center mt-3">{error}</p>
-              )}
+                {loading && retryCount > 1 && (
+                  <p className="text-foreground-dim text-[0.6rem] font-body text-center mb-3 tracking-wide">
+                    Nuovo tentativo… ({retryCount} di 4)
+                  </p>
+                )}
+                <button
+                  onClick={continueToNext}
+                  disabled={loading}
+                  className="w-full bg-gold text-background font-body font-semibold py-4 rounded-full text-sm tracking-wide hover:bg-gold-light active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <CyclingIcon />
+                      Un momento…
+                    </span>
+                  ) : (
+                    'Continua'
+                  )}
+                </button>
+              </div>
             </>
           ) : (
             <LoadingState />
@@ -129,15 +158,17 @@ export default function ChallengeScreen({ step }: Props) {
         /* ── Choice mode ── */
         <div className="flex-1 flex flex-col">
           {stepData.narrative && (
-            <p className="text-foreground-muted font-body text-sm leading-relaxed mb-4 italic">
+            <p className="text-foreground-muted font-body text-xs leading-relaxed mb-3 italic">
               {stepData.narrative}
             </p>
           )}
-          <p className="text-foreground font-body text-base leading-relaxed mb-6">
+
+          <p className="text-foreground font-body text-sm leading-relaxed mb-5">
             {stepData.challenge}
           </p>
+
           <motion.div
-            className="flex flex-col gap-3"
+            className="flex flex-col gap-2.5"
             variants={optionContainer}
             initial="hidden"
             animate="show"
@@ -145,35 +176,39 @@ export default function ChallengeScreen({ step }: Props) {
             {stepData.options.map((option, i) => {
               const isBonus = step === 3 && i === stepData.options.length - 1;
               return (
-              <motion.button
-                key={i}
-                variants={optionItem}
-                onClick={() => chooseOption(option)}
-                disabled={loading}
-                className={
-                  isBonus
-                    ? 'text-left border-2 border-gold bg-gold/10 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:bg-gold/20 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed animate-pulse'
-                    : 'text-left border border-gold/40 text-foreground font-body text-sm py-3 px-4 rounded-xl hover:border-gold hover:bg-gold/10 active:scale-[0.98] transition-colors disabled:opacity-40 disabled:cursor-not-allowed'
-                }
-              >
-                {isBonus && (
-                  <span className="block text-gold text-[10px] font-body font-semibold uppercase tracking-widest mb-1">
-                    Asso nella manica
+                <motion.button
+                  key={i}
+                  variants={optionItem}
+                  onClick={() => chooseOption(option)}
+                  disabled={loading}
+                  className={
+                    isBonus
+                      ? 'group text-left bg-gold/10 border-2 border-gold/60 text-foreground font-body text-xs py-3.5 px-4 rounded-2xl hover:bg-gold/18 hover:border-gold active:scale-[0.98] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed'
+                      : 'group text-left bg-surface border border-gold/20 text-foreground font-body text-xs py-3.5 px-4 rounded-2xl hover:border-gold/50 hover:bg-surface-elevated active:scale-[0.98] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed'
+                  }
+                >
+                  {isBonus && (
+                    <span className="flex items-center gap-1.5 text-gold text-[0.5rem] font-body font-semibold uppercase tracking-widest mb-1.5">
+                      <span>✦</span>
+                      Asso nella manica
+                    </span>
+                  )}
+                  <span className="flex items-start gap-2.5">
+                    <span className="text-gold font-semibold shrink-0 tabular-nums">{i + 1}.</span>
+                    <span className="leading-relaxed">{option.replace(/^\d+[.)]\s*/, '')}</span>
                   </span>
-                )}
-                <span className="text-gold font-semibold mr-2">{i + 1}.</span>
-                {option.replace(/^\d+[.)]\s*/, '')}
-              </motion.button>
+                </motion.button>
               );
             })}
           </motion.div>
+
           {loading && retryCount > 1 && (
-            <p className="text-foreground-muted/60 text-xs font-body text-center mt-4">
-              Nuovo tentativo... ({retryCount} di 4)
+            <p className="text-foreground-dim text-[0.6rem] font-body text-center mt-4 tracking-wide">
+              Nuovo tentativo… ({retryCount} di 4)
             </p>
           )}
           {error && !loading && (
-            <p className="text-red-400 text-xs font-body text-center mt-4">{error}</p>
+            <p className="text-red-400/80 text-xs font-body text-center mt-4">{error}</p>
           )}
         </div>
       )}

@@ -16,61 +16,61 @@ export default function IntroScreen() {
 
       {/* Header */}
       <div className="text-center">
-        <p className="text-gold text-xs font-body tracking-widest uppercase mb-3">
-          WIDE Studio Digitale ti sfida
+        <p className="text-gold text-[0.55rem] font-body tracking-[0.3em] uppercase mb-4">
+          WIDE Studio Digitale presenta
         </p>
-        <h1 className="font-display text-4xl text-foreground leading-tight">
-          Imprenditore
-          <br />
-          per un Giorno
+        <h1 className="font-display leading-[1.1]">
+          <span className="block text-[3rem] text-foreground font-semibold">Imprenditore</span>
+          <span className="block text-[2.2rem] text-foreground/70 font-normal italic">per un Giorno</span>
         </h1>
       </div>
 
       {/* GIF */}
-      <div className="w-full max-w-xs my-8">
+      <div className="w-full max-w-xs my-6">
         <GifSlot name="intro" />
       </div>
 
-      {/* Copy + CTA */}
-      <div className="w-full max-w-xs text-center">
-        <p className="text-foreground-muted text-sm font-body leading-relaxed mb-8">
+      {/* Form */}
+      <div className="w-full max-w-xs">
+        <p className="text-foreground-muted text-xs font-body leading-relaxed mb-6 text-center">
           Tre decisioni di marketing.
-          <br />
           Un prodotto che il mercato non sa di volere.
-          <br />
           Dimostra di saper vendere.
         </p>
 
-        {/* Nome giocatore */}
-        <input
-          type="text"
-          value={playerName}
-          onChange={(e) => setPlayerName(e.target.value)}
-          placeholder="Come ti chiami, imprenditore?"
-          disabled={loading}
-          className="w-full bg-transparent border border-gold/45 text-foreground font-body px-4 py-3 rounded-xl mb-6 focus:outline-none focus:border-gold placeholder:text-foreground-muted/50 transition-colors disabled:opacity-50"
-        />
+        <div className="mb-4">
+          <input
+            type="text"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            placeholder="Come ti chiami, imprenditore?"
+            disabled={loading}
+            className="w-full bg-surface border border-gold/30 text-foreground font-body px-4 py-3.5 rounded-2xl focus:outline-none focus:border-gold/70 focus:bg-surface-elevated placeholder:text-foreground-dim transition-all duration-200 disabled:opacity-50"
+          />
+        </div>
 
         {error && (
-          <p className="text-red-400 text-xs font-body text-center mb-4">{error}</p>
+          <p className="text-red-400/80 text-xs font-body text-center mb-3">{error}</p>
         )}
+
         <button
           onClick={() => startGame(playerName.trim())}
           disabled={loading || !canStart}
-          className="w-full bg-gold text-background font-body font-semibold py-4 rounded-full text-base hover:bg-gold-light active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
+          className="w-full bg-gold text-background font-body font-semibold py-4 rounded-full text-sm tracking-wide hover:bg-gold-light active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
               <CyclingIcon />
-              Preparando...
+              Preparando la sfida…
             </span>
           ) : (
             'Accetta la sfida'
           )}
         </button>
+
         {loading && retryCount > 1 && (
-          <p className="text-foreground-muted/60 text-xs font-body text-center mt-3">
-            Nuovo tentativo... ({retryCount} di 4)
+          <p className="text-foreground-dim text-[0.6rem] font-body text-center mt-3 tracking-wide">
+            Nuovo tentativo… ({retryCount} di 4)
           </p>
         )}
       </div>

@@ -36,24 +36,31 @@ function GameContent() {
     <>
       {showBudget && <BudgetBar />}
       <AnimatePresence mode="wait">
-      <motion.div
-        key={key}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -12 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
-      >
-        {screen}
-        {key !== 'preintro' && (
-        <footer className="flex flex-col items-center gap-2 py-8 px-6">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="WIDE Studio Digitale" width={32} height={32} className="opacity-40 rounded-full" />
-          <p className="text-foreground-muted/40 text-xs font-body text-center leading-relaxed">
-            Un&rsquo;esperienza tragicomica offerta da WIDE Studio Digitale.
-          </p>
-        </footer>
-        )}
-      </motion.div>
+        <motion.div
+          key={key}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          {screen}
+          {key !== 'preintro' && (
+            <footer className="flex flex-col items-center gap-2 py-10 px-6">
+              <span className="gold-rule mb-1" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.png"
+                alt="WIDE Studio Digitale"
+                width={28}
+                height={28}
+                className="opacity-30 rounded-full mt-1"
+              />
+              <p className="text-foreground-dim text-[0.6rem] font-body text-center tracking-widest uppercase mt-1">
+                WIDE Studio Digitale
+              </p>
+            </footer>
+          )}
+        </motion.div>
       </AnimatePresence>
     </>
   );

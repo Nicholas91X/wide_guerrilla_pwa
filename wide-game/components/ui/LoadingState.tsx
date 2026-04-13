@@ -2,11 +2,10 @@ interface Props {
   message?: string;
 }
 
-export default function LoadingState({ message = 'Stiamo contabilizzando i danni...' }: Props) {
+export default function LoadingState({ message = 'Stiamo contabilizzando i danni…' }: Props) {
   return (
-    <div className="flex flex-col items-center gap-5 py-8">
-      {/* Card bianca intenzionale — il video ha sfondo bianco non rimovibile */}
-      <div className="w-full max-w-[240px] rounded-2xl overflow-hidden border border-gold/35 shadow-[0_0_24px_rgba(201,150,58,0.15)]">
+    <div className="flex flex-col items-center gap-5 py-10">
+      <div className="w-full max-w-[220px] rounded-2xl overflow-hidden border border-gold/25 bg-surface">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/gifs/loading.gif"
@@ -14,7 +13,10 @@ export default function LoadingState({ message = 'Stiamo contabilizzando i danni
           className="w-full aspect-[3/2] object-cover block"
         />
       </div>
-      <p className="text-foreground-muted text-sm font-body text-center">{message}</p>
+      <div className="flex flex-col items-center gap-1">
+        <span className="gold-rule" />
+        <p className="text-foreground-muted text-xs font-body text-center mt-1">{message}</p>
+      </div>
     </div>
   );
 }
