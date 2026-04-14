@@ -40,7 +40,7 @@ Fornisci esattamente 3 opzioni numeriche di marketing, brevi, credibili ma desti
             properties: {
               narrative: {
                 type: 'string',
-                description: 'Introduzione ironica del prodotto, max 3 righe. Usa la tecnica in 3 movimenti: dettaglio iper-realistico → svolta assurda → conseguenza laterale. Nomi propri italiani, cifre reali, riferimenti culturali italiani. No emoji.',
+                description: 'Introduzione del prodotto, max 2 righe. Tono da fatto compiuto. UN dettaglio specifico (prezzo, fornitore, o target). No emoji.',
               },
               challenge: {
                 type: 'string',

@@ -37,18 +37,22 @@ NO: "Affidi tutto a tuo cognato, che ha fatto un corso online di 4 ore."
 Fase 3 — OPZIONE BONUS ESTERO: la quarta opzione è sempre "vendere all'estero" con tramite improbabile, paese specifico, dettaglio logistico già compromesso. Sembra la mossa del genio incompreso.
 Es: "Spedisci 200 unità a un grossista di Tirana trovato su un gruppo Facebook."
 
-## CONSEGUENZE (max 4 righe)
+## CONSEGUENZE (max 3 righe dopo il titolo)
 
 PRIMA RIGA: frase breve MAIUSCOLO + punto, da sola. Contestuale, asciutta.
 Es: "OTTIMA SCELTA.", "IL COGNATO HA RISPOSTO.", "IL GIORNALE È USCITO."
 Mai la stessa frase due volte. Mai punti esclamativi.
 
-Poi 3 movimenti in 3 righe:
-1. DETTAGLIO — Referto dell'esecuzione. Nomi propri italiani, cifre esatte (€3.847, non "molti soldi"), orari, testate vere, catene vere. Personaggi con tratti specifici: "Gianfranco, consulente social, non ha uno smartphone."
-2. SVOLTA — Un elemento realistico prende una piega inaspettata. Ridicola ma inevitabile. Raccontala come il meteo.
-3. DANNO LATERALE — Effetto collaterale peggiore del danno principale, mai economico: personale, familiare, burocratico. Un rapporto si rompe. Un vigile si presenta.
+Poi 2 movimenti in 2-3 righe:
+1. SUCCESSO — Un fatto concreto e positivo. UNA cifra esatta O UN nome proprio O UN riferimento specifico — mai tutti insieme. L'utente sta vincendo.
+2. CROLLO — Un singolo fatto ribalta tutto. Il danno è personale, familiare o burocratico — mai solo economico. Raccontalo come il meteo.
 
-REGOLA: ogni conseguenza INIZIA con un successo esplicito. Per almeno 1-2 righe l'utente sta vincendo. Poi il disastro arriva lateralmente, come un WhatsApp alle 23:47.
+Il crollo NON è un terzo beat separato: è dentro la stessa frase o la frase dopo la svolta.
+Un dettaglio specifico per conseguenza, non tre. Se c'è un nome, basta quello. Se c'è una cifra, basta quella.
+I personaggi secondari sono ruoli ("il commercialista", "tua cognata", "il vicino"), non schede anagrafiche — TRANNE il personaggio ricorrente (vedi sotto).
+
+SÌ: "L'evento da Eurospin porta 47 persone. Il video fa 12.000 visualizzazioni in 3 ore.\nPoi Altroconsumo analizza gli ingredienti. Tua cognata ti toglie il saluto."
+NO: "Gianfranco, il tuo consulente social che non ha uno smartphone, organizza un evento da Eurospin. Vengono 47 persone. Il video su Facebook raggiunge 12.000 visualizzazioni in 3 ore. Poi Altroconsumo pubblica un'analisi sugli ingredienti. Tua cognata ti toglie il saluto al pranzo di Pasqua."
 
 ## BUDGET
 

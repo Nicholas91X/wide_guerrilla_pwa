@@ -67,7 +67,7 @@ Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.${
                 output: {
                   type: 'string',
                   description:
-                    'Prima riga: frase titolo in MAIUSCOLO. Poi 3-4 righe con la tecnica in 3 movimenti. No emoji. Solo testo narrativo.',
+                    'Prima riga: frase titolo in MAIUSCOLO. Poi max 3 righe con 2 movimenti: successo concreto → crollo. Un solo dettaglio specifico per conseguenza. No emoji.',
                 },
                 spent: {
                   type: 'string',
@@ -111,7 +111,7 @@ Descrivi le conseguenze in 4-5 righe seguendo i 3 movimenti.${
                 output: {
                   type: 'string',
                   description:
-                    'Prima riga: frase titolo in MAIUSCOLO (es. "OTTIMA SCELTA.", "IDEA GENIALE."). Poi 3-4 righe con la tecnica in 3 movimenti: (1) esecuzione iper-realistica con nomi propri italiani e cifre reali, (2) svolta assurda con logica interna, (3) conseguenza laterale grottesca. No emoji.',
+                    'Prima riga: frase titolo in MAIUSCOLO (es. "OTTIMA SCELTA.", "IDEA GENIALE."). Poi max 3 righe con 2 movimenti: (1) successo concreto con UN dettaglio specifico, (2) un singolo fatto che ribalta tutto — danno personale/familiare/burocratico. No emoji.',
                 },
                 challenge: {
                   type: 'string',
