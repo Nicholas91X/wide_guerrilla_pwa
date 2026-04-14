@@ -9,6 +9,14 @@ import {
 } from 'react';
 import type { GameState, Product, StepData } from '@/types/game';
 import productsData from '@/data/products.json';
+import {
+  trackGameStart,
+  trackChoiceMade,
+  trackStepCompleted,
+  trackConclusionViewed,
+  trackContactSubmitted,
+  trackContactSkipped,
+} from '@/lib/tracking';
 
 // ─── Costanti ────────────────────────────────────────────────────────────────
 
@@ -225,6 +233,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
         lastWords: null,
         contact: { type: null, value: null, submitted: false },
       });
+
+      trackGameStart(playerName, product.name);
     } catch (err) {
       console.error('[startGame]', err);
       setError(errorMessage(err));
@@ -241,6 +251,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
       const step = state.currentStep as 1 | 2 | 3;
       const idx = step - 1;
+
+      const optionIndex = state.steps[idx].options.indexOf(choice);
+      const isBonus = step === 3 && optionIndex === state.steps[idx].options.length - 1;
+      trackChoiceMade(step, choice, optionIndex, isBonus);
 
       setState((prev) => {
         if (!prev) return prev;
@@ -343,8 +357,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (!state || loading) return;
 
     if (state.currentStep === 1) {
+      trackStepCompleted(1);
       setState({ ...state, currentStep: 2 });
     } else if (state.currentStep === 2) {
+      trackStepCompleted(2);
       setState({ ...state, currentStep: 3 });
     } else if (state.currentStep === 3) {
       setLoading(true);
@@ -378,6 +394,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
         };
         setState(newState);
         void saveSession(newState);
+
+        trackStepCompleted(3);
+        trackConclusionViewed(state.totalLoss ?? '€0');
       } catch (err) {
         console.error('[continueToNext/conclude]', err);
         setError(errorMessage(err));
@@ -400,6 +419,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const newState: GameState = { ...state, contact: { type, value, submitted: true } };
       setState(newState);
       void saveSession(newState);
+      trackContactSubmitted(type);
     },
     [state]
   );
@@ -409,6 +429,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const newState: GameState = { ...state, contact: { ...state.contact, submitted: true } };
     setState(newState);
     void saveSession(newState);
+    trackContactSkipped();
   }, [state]);
 
   return (

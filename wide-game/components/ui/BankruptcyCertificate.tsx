@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { toPng } from 'html-to-image';
+import { trackCertificateShared } from '@/lib/tracking';
 
 interface Props {
   playerName: string;
@@ -42,11 +43,13 @@ export default function BankruptcyCertificate({
           files: [file],
           title: 'Il mio certificato di bancarotta',
         });
+        trackCertificateShared('native');
       } else {
         const a = document.createElement('a');
         a.href = dataUrl;
         a.download = 'certificato-bancarotta.png';
         a.click();
+        trackCertificateShared('download');
       }
     } catch (err) {
       console.error('[BankruptcyCertificate] share error', err);
@@ -58,6 +61,7 @@ export default function BankruptcyCertificate({
   function handleWhatsApp() {
     const text = `Ho perso ${totalLoss} vendendo "${productName}". E tu?\n${APP_URL}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    trackCertificateShared('whatsapp');
   }
 
   return (

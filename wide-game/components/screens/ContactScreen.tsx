@@ -7,6 +7,7 @@ import GifSlot from '@/components/ui/GifSlot';
 import BankruptcyCertificate from '@/components/ui/BankruptcyCertificate';
 import { VIDEO_POOLS } from '@/lib/videoPools';
 import { useGameStats } from '@/hooks/useGameStats';
+import { trackDiscoverWideClicked } from '@/lib/tracking';
 
 const revealTransition = (delay: number) =>
   ({ duration: 0.5, ease: 'easeOut' as const, delay }) as const;
@@ -88,6 +89,7 @@ export default function ContactScreen() {
           href="https://widestudiodigitale.com/"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackDiscoverWideClicked()}
           className="mt-6 w-full max-w-xs bg-gold text-background font-body font-semibold py-4 rounded-full text-sm tracking-wide text-center block hover:bg-gold-light active:scale-[0.98] transition-all duration-200"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
