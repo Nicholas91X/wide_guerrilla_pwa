@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
-import LoadingState from '@/components/ui/LoadingState';
 import GifSlot from '@/components/ui/GifSlot';
 import CyclingIcon from '@/components/ui/CyclingIcon';
 import TypewriterBlock from '@/components/ui/TypewriterBlock';
@@ -132,7 +131,6 @@ export default function ChallengeScreen({ step }: Props) {
                 speed={13}
                 hasTitle
               />
-              <MarketReaction step={step} />
               <div className="mt-6">
                 {error && (
                   <p className="text-red-400/80 text-xs font-body text-center mb-3">{error}</p>
@@ -159,7 +157,33 @@ export default function ChallengeScreen({ step }: Props) {
               </div>
             </>
           ) : (
-            <LoadingState />
+            /* ── Overlay di transizione ── */
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.35 }}
+              className="fixed inset-0 z-[60] bg-background/90 backdrop-blur-sm flex flex-col items-center px-5"
+            >
+              {/* GIF libera in alto */}
+              <div className="mt-16 w-full max-w-[200px]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/gifs/loading.gif"
+                  alt="Caricamento..."
+                  className="w-full rounded-xl"
+                />
+              </div>
+
+              <span className="gold-rule mt-4 mb-2" />
+              <p className="text-foreground-muted text-xs font-body text-center mb-8">
+                Stiamo contabilizzando i danni…
+              </p>
+
+              {/* Market Reaction centrata */}
+              <div className="w-full max-w-sm">
+                <MarketReaction step={step} />
+              </div>
+            </motion.div>
           )}
         </div>
       ) : (

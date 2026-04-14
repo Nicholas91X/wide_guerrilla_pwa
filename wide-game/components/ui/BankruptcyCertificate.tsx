@@ -10,7 +10,7 @@ interface Props {
   lastWords: string;
 }
 
-const APP_URL = 'https://imprenditoreperungiorno.it';
+const APP_URL = 'https://game.widestudiodigitale.com/';
 
 function todayItalian(): string {
   return new Date().toLocaleDateString('it-IT', {
