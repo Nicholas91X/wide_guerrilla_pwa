@@ -82,3 +82,16 @@ h4 {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
+
+/* Budget bar shake quando va in rosso */
+@keyframes budget-shake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-4px); }
+  20% { transform: translateX(4px); }
+  30% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  50% { transform: translateX(-2px); }
+  60% { transform: translateX(2px); }
+  70% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+}

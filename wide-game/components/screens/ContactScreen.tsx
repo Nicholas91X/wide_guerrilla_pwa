@@ -6,6 +6,7 @@ import { useGame } from '@/contexts/GameContext';
 import GifSlot from '@/components/ui/GifSlot';
 import BankruptcyCertificate from '@/components/ui/BankruptcyCertificate';
 import { VIDEO_POOLS } from '@/lib/videoPools';
+import { useGameStats } from '@/hooks/useGameStats';
 
 const revealTransition = (delay: number) =>
   ({ duration: 0.5, ease: 'easeOut' as const, delay }) as const;
@@ -22,6 +23,7 @@ function isValidValue(value: string, type: 'email' | 'whatsapp'): boolean {
 
 export default function ContactScreen() {
   const { state, submitContact, skipContact } = useGame();
+  const { totalGames } = useGameStats();
   const [contactType, setContactType] = useState<'email' | 'whatsapp'>('email');
   const [value, setValue] = useState('');
   const [gdpr, setGdpr] = useState(false);
@@ -109,6 +111,18 @@ export default function ContactScreen() {
 
   return (
     <div className="min-h-screen flex flex-col px-5 py-8 overflow-y-auto">
+
+      {/* Social proof */}
+      {totalGames > 0 && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-foreground-dim text-[0.55rem] font-body text-center tracking-wide mb-5"
+        >
+          {totalGames.toLocaleString('it-IT')} imprenditori già falliti
+        </motion.p>
+      )}
 
       {/* Header */}
       <div className="mb-7">

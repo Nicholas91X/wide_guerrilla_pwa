@@ -7,7 +7,11 @@ import GifSlot from '@/components/ui/GifSlot';
 import CyclingIcon from '@/components/ui/CyclingIcon';
 import TypewriterBlock from '@/components/ui/TypewriterBlock';
 import ProductImage from '@/components/ui/ProductImage';
+import MarketReaction from '@/components/ui/MarketReaction';
 import { VIDEO_POOLS } from '@/lib/videoPools';
+import productsData from '@/data/products.json';
+
+const TOTAL_PRODUCTS = productsData.products.length;
 
 const STEP_TITLES: Record<1 | 2 | 3, string> = {
   1: 'Il Posizionamento',
@@ -100,8 +104,11 @@ export default function ChallengeScreen({ step }: Props) {
             <p className="text-gold/60 text-[0.55rem] font-body uppercase tracking-[0.2em] mb-1.5">
               Brief di marketing
             </p>
-            <p className="text-foreground text-sm font-body font-semibold leading-snug mb-2">
+            <p className="text-foreground text-sm font-body font-semibold leading-snug mb-1">
               {state.product.name}
+            </p>
+            <p className="text-foreground-dim text-[0.55rem] font-body tracking-wide mb-2">
+              1 di {TOTAL_PRODUCTS} prodotti impossibili
             </p>
             {state.pitch && splitPitch(state.pitch).map((line, i) => (
               <p key={i} className="text-foreground-muted text-xs font-body leading-relaxed mt-1.5">
@@ -125,7 +132,8 @@ export default function ChallengeScreen({ step }: Props) {
                 speed={13}
                 hasTitle
               />
-              <div className="mt-8">
+              <MarketReaction step={step} />
+              <div className="mt-6">
                 {error && (
                   <p className="text-red-400/80 text-xs font-body text-center mb-3">{error}</p>
                 )}
