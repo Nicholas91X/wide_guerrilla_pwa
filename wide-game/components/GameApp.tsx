@@ -9,6 +9,7 @@ import ChallengeScreen from './screens/ChallengeScreen';
 import ConclusionScreen from './screens/ConclusionScreen';
 import ContactScreen from './screens/ContactScreen';
 import BudgetBar from './ui/BudgetBar';
+import { reopenCookieBanner } from './ui/CookieBanner';
 
 function GameContent() {
   const { state } = useGame();
@@ -58,6 +59,24 @@ function GameContent() {
               <p className="text-foreground-dim text-[0.6rem] font-body text-center tracking-widest uppercase mt-1">
                 WIDE Studio Digitale
               </p>
+              <div className="flex items-center gap-3 mt-2">
+                <a
+                  href="https://widestudiodigitale.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground-dim text-[0.5rem] font-body tracking-wide hover:text-foreground-muted transition-colors"
+                >
+                  Privacy
+                </a>
+                <span className="text-foreground-dim/40 text-[0.5rem]">·</span>
+                <button
+                  type="button"
+                  onClick={() => reopenCookieBanner()}
+                  className="text-foreground-dim text-[0.5rem] font-body tracking-wide hover:text-foreground-muted transition-colors"
+                >
+                  Gestisci cookie
+                </button>
+              </div>
             </footer>
           )}
         </motion.div>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
+import CookieBanner from '@/components/ui/CookieBanner';
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
@@ -96,6 +97,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </noscript>
         )}
         {children}
+        <CookieBanner />
       </body>
     </html>
   );
